@@ -4,11 +4,13 @@ import {Grid, TextField, Button, Paper, Typography} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles'
 
 import useClassicGameAdmin from '../../util/useClassicGameAdmin';
+import PlayerDeckView from './Admin/PlayerDeckView'
 
 const useStyles = makeStyles((theme)=>({
     root: {
         padding: theme.spacing(1),
-        height: '100%'
+        height: '100%',
+        marginTop: theme.spacing(3)
     },
     paperRoot: {
         padding: theme.spacing(2)
@@ -32,7 +34,7 @@ function ClassicAdmin(props) {
     }
 
     return (
-        <Grid container direction='row' justify='center' alignItems='center' className={classes.root}>
+        <Grid container direction='column' justify='center' alignItems='center' spacing={2} className={classes.root}>
         <Grid item md={6} sm={10} xs={12}>
     <Paper classes={{root: classes.paperRoot}}>
         <Grid container direction='column' justify='center' alignItems='center' spacing={2}>
@@ -85,6 +87,9 @@ function ClassicAdmin(props) {
             </Grid>
         </Grid>
     </Paper>
+    </Grid>
+    <Grid item  md={6} sm={12} xs={12}>
+        <PlayerDeckView items={[[[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3]],[],[],[],[],[],[]]} playerName='132 Gabriel Drix Lopez' />
     </Grid>
     </Grid>
     )
