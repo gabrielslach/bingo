@@ -35,7 +35,7 @@ function GameRoom() {
     <Route path={`${match.path}/admin`}>
       <ClassicAdmin roomId={roomId} />
     </Route>
-    <Route path={`${match.path}`}>
+    <Route path={`${match.path}/:playerID`}>
       <ClassicDeckView roomId={roomId} />
     </Route>
   </Switch>);
