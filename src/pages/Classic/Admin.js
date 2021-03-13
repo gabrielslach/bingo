@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {Grid, TextField, Button, Paper, Typography} from '@material-ui/core';
-import {makeStyles} from '@material-ui/core/styles'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
 
 import useClassicGameAdmin from '../../util/useClassicGameAdmin';
 import PlayerDeckView from './Admin/PlayerDeckView'
@@ -9,13 +9,45 @@ import PlayerDeckView from './Admin/PlayerDeckView'
 const useStyles = makeStyles((theme)=>({
     root: {
         padding: theme.spacing(1),
-        height: '100%',
         marginTop: theme.spacing(3)
     },
     paperRoot: {
         padding: theme.spacing(2)
-    }
-}))
+    },
+}));
+
+const CssTextField = withStyles({
+    root: {
+      
+      '& label.Mui-focused': {
+        color: 'rgba(255,248,6,0.8)',
+      },
+      '& label': {
+        color: 'rgba(255,255,255,0.8)',
+      },
+      '&:hover label': {
+        color: 'rgba(255,248,6,0.8)',
+      },
+      '& .MuiOutlinedInput-root': {
+        color: 'rgba(255,255,255,0.8)',
+        '& fieldset': {
+          borderColor: 'rgba(255,255,255,0.4)',
+        },
+        '&:hover fieldset': {
+          borderColor: 'rgba(255,248,6,0.4)',
+        },
+        '&:hover': {
+          color: 'rgba(255,248,6,0.8)',
+        },
+        '&.Mui-focused': {
+          color: 'rgba(255,248,6,0.8)',
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: 'rgba(255,248,6,0.8)',
+        },
+      },
+    },
+  })(TextField);
 
 function ClassicAdmin(props) {
     const {roomId} = props;
@@ -87,6 +119,13 @@ function ClassicAdmin(props) {
             </Grid>
         </Grid>
     </Paper>
+    </Grid>
+    <Grid item xs={12}>
+        <CssTextField
+            label="Search Player Deck"
+            variant="outlined"
+            id="custom-css-outlined-input"
+        />
     </Grid>
     <Grid item  md={6} sm={12} xs={12}>
         <PlayerDeckView items={[[[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3]],[],[],[],[],[],[]]} playerName='132 Gabriel Drix Lopez' />
