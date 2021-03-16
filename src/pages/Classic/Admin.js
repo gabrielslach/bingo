@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {Grid, TextField, Button, Paper, Typography} from '@material-ui/core';
 import {makeStyles, withStyles} from '@material-ui/core/styles'
@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme)=>({
         marginTop: theme.spacing(3)
     },
     paperRoot: {
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        textAlign: 'center'
     },
 }));
 
@@ -57,7 +58,11 @@ function ClassicAdmin(props) {
             email: email.value,
             noOfCards: noOfCards.value
         });
-    }
+    };
+
+    useEffect(()=> {
+        setClassicGameAdmin('get-player-all');
+    }, [])
 
     return (
         <Grid container direction='column' justify='center' alignItems='center' spacing={2} className={classes.root}>
@@ -66,29 +71,6 @@ function ClassicAdmin(props) {
         <Grid container direction='column' justify='center' alignItems='center' spacing={2}>
             <Grid item>
                 <Typography variant='h3'>Room {roomId} Game Master</Typography>
-            </Grid>
-            <Grid item>
-                <Grid container direction='row' spacing={1} justify='center' alignItems='center'>
-                    <Grid item>
-                        <TextField variant='outlined' label='No. of Cards' margin="dense"/>
-                    </Grid>
-                    <Grid item>
-                        <Button variant='contained'>Add Cards</Button>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item>
-                <Grid container direction='column' alignItems='center'>
-                    <Grid item>
-                        <Typography variant='subtitle2'>No. of Cards Generated: <b>000</b></Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant='subtitle2'>No. of Cards Assigned: <b>000</b></Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography variant='subtitle2'>No. of Cards Available: <b>000</b></Typography>
-                    </Grid>
-                </Grid>
             </Grid>
             <Grid item>
                 <form onSubmit={handleCreatePlayer}>
@@ -121,9 +103,11 @@ function ClassicAdmin(props) {
             id="custom-css-outlined-input"
         />
     </Grid>
-    <Grid item  md={6} sm={12} xs={12}>
-        <PlayerDeckView items={[[[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3],[1,4,2,5,3]],[],[],[],[],[],[]]} playerName='132 Gabriel Drix Lopez' />
+    {players.map(item => (
+        <Grid item  md={6} sm={12} xs={12} key={`${item.player.id}-deck-view`}>
+        <PlayerDeckView items={item.cards} playerName={`${item.player.id} ${item.player.name}`} />
     </Grid>
+    ))}
     </Grid>
     )
   }

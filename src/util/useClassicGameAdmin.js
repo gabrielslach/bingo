@@ -86,12 +86,18 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     startTimeout();
     switch (req) {
       case "get-player":
-        const {playerID} = vars;
+        const {playerId} = vars;
         api = "get-player";
-        dataparam = {playerID}; // This are the parameters or arguments supplied on the post request.
+        dataparam = {playerId}; // This are the parameters or arguments supplied on the post request.
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
             setCards(data.cards);
             setPlayers(data.player);
+        }
+        break;
+      case "get-player-all":
+        api = "get-player-all";
+        onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
+            setPlayers(data.players);
         }
         break;
     case "register-player" :
@@ -104,7 +110,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         dataparam = {name, email, noOfCards};
         onSuccess = (data) => {
             console.log(data)
-            makeRequest('get-player')
+            makeRequest('get-player-all')
         };
         break;
       default:

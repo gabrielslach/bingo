@@ -24,14 +24,14 @@ const useStyles = makeStyles((theme)=>({
 function PlayerDeckView(props) {
     const {items = [], onSelectCard, playerName=''} = props;
     const classes = useStyles();
-
+    
     return(
         <Paper variant="outlined" className={classes.paperRoot}>
             <Typography variant='h5'><b>{playerName}'s Deck</b></Typography>
             <Grid container spacing={1} className={classes.gridRoot}>
                 {items.map((item,index)=>
                     <Grid item key={`cards-${index}`}>
-                        <Card items={item} onSelectCard={()=>onSelectCard(index)} cardId='' />
+                        <Card items={item.cells} onSelectCard={()=>onSelectCard(index)} cardId={item.id} />
                     </Grid>
                 )}
             </Grid>
