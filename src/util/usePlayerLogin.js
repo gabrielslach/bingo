@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useContext } from "react";
 
 import { toast } from "react-toastify";
 
-import { postRequest } from "./utilityFunctions";
-
 import { useCookies } from 'react-cookie';
+
+import AppContext from "./appContext";
+import { postRequest } from "./utilityFunctions";
 
 const displayToast = (message, type, displayDuration) => {
   toast(message, {
@@ -15,13 +16,13 @@ const displayToast = (message, type, displayDuration) => {
 };
 
 export default function useClassicGameAdmin(vars) { // You could use this var to set something on the local state.
-  let [cookies, setCookie, removeCookie] = useCookies(['loginToken']);
+  let appContext = useContext(AppContext);
 
   var timeOutVar;
 
   //states
-  const [players, setPlayers] = useState([]);
-  const [cards, setCards] = useState([]);
+  
+  const [cookies, setCookie] = useCookies(['loginToken']);
 
   /*************** Dont edit below this line ***************/
   function startTimeout() {
@@ -50,11 +51,6 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   };
 
   const onRequestFail = (req, status) => {
-    if (status === 401) {
-      removeCookie('loginToken', {path: '/'});
-      console.log('Token reset.', cookies)
-    }
-
     console.log(
       "Server Error: Please contact your server administrator.",
     );
@@ -78,7 +74,6 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
       })
       .catch((err) => {
         stopTimeout();
-        onRequestFail(req, err.response.status);
         console.log("makePostRequest_err: ", err);
       });
   };
@@ -86,48 +81,53 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   /*************** Dont edit above this line ***************/
 
   const makeRequest = (req, vars = {}) => {
-    var api = "api/";
+    var api = "";
     var dataparam = {};
     let onSuccess = () => {};
 
+    const {
+      roomId = '',
+      playerId = '',
+      password
+  } = vars;
+
     startTimeout();
     switch (req) {
-      case "get-player":
-        const {playerId} = vars;
-        api += "get-player";
-        dataparam = {playerId}; // This are the parameters or arguments supplied on the post request.
-        onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
-            setCards(data.cards);
-            setPlayers(data.player);
-        }
-        break;
-      case "get-player-all":
-        api += "get-player-all";
-        onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
-            setPlayers(data.players);
-        }
-        break;
-    case "register-player" :
-        const {
-            name, 
-            email, 
-            noOfCards
-        } = vars;
-        api += "register-player";
-        dataparam = {name, email, noOfCards};
+      // case "get-player":
+      //   const {playerId} = vars;
+      //   api = "get-player";
+      //   dataparam = {playerId}; // This are the parameters or arguments supplied on the post request.
+      //   onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
+            
+      //   }
+      //   break;
+    case "login" :
+        api = "login";
+        dataparam = {roomId, password};
         onSuccess = (data) => {
-            console.log(data)
-            makeRequest('get-player-all')
+            const {loginToken} = data;
+            const maxAge = 24 * 60 * 60;
+            
+            setCookie('loginToken', loginToken, { path: '/', maxAge });
+        };
+        break;
+    case "player-login" :
+        api = "player-login";
+        dataparam = {roomId, playerId, password};
+        onSuccess = (data) => {
+            const {loginToken} = data;
+            const maxAge = 24 * 60 * 60;
+            
+            setCookie('loginToken', loginToken, { path: '/', maxAge });
         };
         break;
       default:
     }
-    if (req !== "" || typeof req !== "undefined") makePostRequest(req, api, dataparam, cookies.loginToken, onSuccess);
+    if (req !== "" || typeof req !== "undefined") makePostRequest(req, api, dataparam, appContext.loginToken, onSuccess);
   };
 
   return [
-    cards,
-    players,
+    cookies,
     makeRequest,
   ];
 }

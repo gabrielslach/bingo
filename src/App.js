@@ -11,6 +11,8 @@ import {
   useParams
 } from "react-router-dom";
 
+import { CookiesProvider } from 'react-cookie';
+
 import Dashboard from './pages/Dashboard'
 import CreateRoom from './pages/CreateRoom'
 import Lobby from './pages/Lobby'
@@ -57,16 +59,18 @@ function ClassicBingo() {
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path='/classic'>
-          <ClassicBingo/>
-        </Route>
-        <Route path="/">
-          {/* <Home/> */}
-        </Route>
-      </Switch>
-    </Router>
+    <CookiesProvider>
+      <Router>
+        <Switch>
+          <Route path='/classic'>
+            <ClassicBingo/>
+          </Route>
+          <Route path="/">
+            {/* <Home/> */}
+          </Route>
+        </Switch>
+      </Router>
+    </CookiesProvider>
   )
 }
 

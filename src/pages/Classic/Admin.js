@@ -4,6 +4,7 @@ import {Grid, TextField, Button, Paper, Typography} from '@material-ui/core';
 import {makeStyles, withStyles} from '@material-ui/core/styles'
 
 import useClassicGameAdmin from '../../util/useClassicGameAdmin';
+import usePlayerLogin from '../../util/usePlayerLogin';
 import PlayerDeckView from './Admin/PlayerDeckView'
 
 const useStyles = makeStyles((theme)=>({
@@ -48,6 +49,7 @@ function ClassicAdmin(props) {
     const {roomId} = props;
     const classes = useStyles();
 
+    const [cookies, setPlayerLogin] = usePlayerLogin();
     const  [cards = [], players = [], setClassicGameAdmin] = useClassicGameAdmin();
 
     const handleCreatePlayer = e => {
@@ -59,6 +61,12 @@ function ClassicAdmin(props) {
             noOfCards: noOfCards.value
         });
     };
+
+    const handleAdminLogin = e => {
+        e.preventDefault();
+        const password = e.target.password.value;
+        setPlayerLogin('login', {roomId, password});
+    }
 
     useEffect(()=> {
         setClassicGameAdmin('get-player-all');
@@ -72,27 +80,44 @@ function ClassicAdmin(props) {
             <Grid item>
                 <Typography variant='h3'>Room {roomId} Game Master</Typography>
             </Grid>
-            <Grid item>
-                <form onSubmit={handleCreatePlayer}>
-                <Grid container direction='row' spacing={1} justify='center' alignItems='center'>
-                    <Grid item md={3} sm={12}>
-                        <TextField variant='outlined' label='Name' name='name' margin="dense" fullWidth/>
+            {!cookies.loginToken ? 
+                <Grid item>
+                    <form onSubmit={handleAdminLogin}>
+                    <Grid container direction='row' spacing={1} justify='center' alignItems='center'>
+                        <Grid item md={6} sm={12}>
+                            <TextField variant='outlined' label='Password' name='password' type='password' margin="dense" fullWidth/>
+                        </Grid>
+                        <Grid item md={2} sm={12}>
+                            <Button variant='contained' type='submit' fullWidth>Login</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item md={4} sm={12}>
-                        <TextField variant='outlined' label='Email' name='email' margin="dense" fullWidth/>
-                    </Grid>
-                    <Grid item md={3} sm={12}>
-                        <TextField variant='outlined' label='No of Cards' name='noOfCards' margin="dense" fullWidth/>
-                    </Grid>
-                    <Grid item md={2} sm={12}>
-                        <Button variant='contained' type='submit' fullWidth>Create Player</Button>
-                    </Grid>
+                    </form>
                 </Grid>
-                </form>
-            </Grid>
-            <Grid item>
-                <Button variant='contained'>Game Draw</Button>
-            </Grid>
+            :
+            <React.Fragment>
+                <Grid item>
+                    <form onSubmit={handleCreatePlayer}>
+                    <Grid container direction='row' spacing={1} justify='center' alignItems='center'>
+                        <Grid item md={3} sm={12}>
+                            <TextField variant='outlined' label='Name' name='name' margin="dense" fullWidth/>
+                        </Grid>
+                        <Grid item md={4} sm={12}>
+                            <TextField variant='outlined' label='Email' name='email' margin="dense" fullWidth/>
+                        </Grid>
+                        <Grid item md={3} sm={12}>
+                            <TextField variant='outlined' label='No of Cards' name='noOfCards' margin="dense" fullWidth/>
+                        </Grid>
+                        <Grid item md={2} sm={12}>
+                            <Button variant='contained' type='submit' fullWidth>Create Player</Button>
+                        </Grid>
+                    </Grid>
+                    </form>
+                </Grid>
+                <Grid item>
+                    <Button variant='contained'>Game Draw</Button>
+                </Grid>
+            </React.Fragment>
+            }
         </Grid>
     </Paper>
     </Grid>

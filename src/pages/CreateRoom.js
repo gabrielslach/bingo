@@ -2,7 +2,6 @@ import React from 'react'
 
 import {Paper, Typography, TextField, Grid, Button} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
-import {createRoom} from '../firebaseFunctions'
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -20,8 +19,7 @@ function CreateRoom(props) {
     const classes = useStyles();
 
     const handleCreateRoom = () => {
-        const roomID = createRoom();
-        setRoomID(roomID);
+        setRoomID()
     }
 
     return(
