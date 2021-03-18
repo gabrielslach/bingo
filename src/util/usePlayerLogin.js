@@ -109,6 +109,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
             const maxAge = 24 * 60 * 60;
             
             setCookie('loginToken', loginToken, { path: '/', maxAge });
+            window.location.reload();
         };
         break;
     case "player-login" :
@@ -119,6 +120,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
             const maxAge = 24 * 60 * 60;
             
             setCookie('loginToken', loginToken, { path: '/', maxAge });
+            window.location.reload();
         };
         break;
       default:

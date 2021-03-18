@@ -58,7 +58,8 @@ function ClassicAdmin(props) {
         setClassicGameAdmin('register-player', {
             name: name.value,
             email: email.value,
-            noOfCards: noOfCards.value
+            noOfCards: noOfCards.value,
+            roomId
         });
     };
 
@@ -68,9 +69,11 @@ function ClassicAdmin(props) {
         setPlayerLogin('login', {roomId, password});
     }
 
-    useEffect(()=> {
-        setClassicGameAdmin('get-player-all');
-    }, [])
+    useEffect(() => {
+      if (cookies.loginToken) {
+        setClassicGameAdmin("get-player-all", { roomId });
+      }
+    }, [cookies]);
 
     return (
         <Grid container direction='column' justify='center' alignItems='center' spacing={2} className={classes.root}>
@@ -129,7 +132,7 @@ function ClassicAdmin(props) {
         />
     </Grid>
     {players.map(item => (
-        <Grid item  md={6} sm={12} xs={12} key={`${item.player.id}-deck-view`}>
+        <Grid item  md={8} sm={12} xs={12} key={`${item.player.id}-deck-view`}>
         <PlayerDeckView items={item.cards} playerName={`${item.player.id} ${item.player.name}`} />
     </Grid>
     ))}
