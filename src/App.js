@@ -18,6 +18,7 @@ import CreateRoom from './pages/CreateRoom'
 import Lobby from './pages/Lobby'
 import ClassicAdmin from './pages/Classic/Admin'
 import ClassicDeckView from './pages/Classic/DeckView'
+import ClassicDeckViewLogin from './pages/Classic/DeckViewLogin'
 
 function Home() {
   const [roomID, setRoomID] = useState(null) //create custom hook once grew
@@ -39,6 +40,9 @@ function GameRoom() {
     </Route>
     <Route path={`${match.path}/:playerId`}>
       <ClassicDeckView roomId={roomId} />
+    </Route>
+    <Route path={`${match.path}/`}>
+      <ClassicDeckViewLogin roomId={roomId} />
     </Route>
   </Switch>);
 }

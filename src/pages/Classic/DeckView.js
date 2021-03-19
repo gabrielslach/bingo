@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {
-    useParams
+    useParams,
+    useRouteMatch
   } from "react-router-dom";
 
   
@@ -10,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import CardView from './CardView'
 
 import useClassicGameAdmin from '../../util/useClassicGameAdmin';
+import usePlayerLogin from '../../util/usePlayerLogin';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,15 +24,23 @@ const useStyles = makeStyles(theme => ({
 
 function DeckView(props) {
     const {roomId} = props;
+    const match = useRouteMatch();
+
     const classes = useStyles();
 
     const {playerId} = useParams();
     
     const [cards = [], players = [], setClassicGameAdmin ] = useClassicGameAdmin();
-    useEffect(()=> {
-        setClassicGameAdmin('get-player', {playerId});
+    const [cookies] = usePlayerLogin();
 
-    }, [])
+    useEffect(()=> {
+        if (cookies.loginToken) {
+            setClassicGameAdmin('get-player', {playerId, roomId});
+        } else {
+            const rootPath = match.path.split('/:roomId/:playerId')[0]
+            window.location.assign(`${rootPath}/${roomId}`)
+        };
+    }, [cookies])
     return (
         <Grid container direction='row' alignItems = 'center' spacing={2} className={classes.root}>
             <Grid item className={classes.headers}>

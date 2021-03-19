@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 import { useCookies } from 'react-cookie';
 
-import AppContext from "./appContext";
 import { postRequest } from "./utilityFunctions";
 
 const displayToast = (message, type, displayDuration) => {
@@ -16,13 +15,12 @@ const displayToast = (message, type, displayDuration) => {
 };
 
 export default function useClassicGameAdmin(vars) { // You could use this var to set something on the local state.
-  let appContext = useContext(AppContext);
 
   var timeOutVar;
 
   //states
   
-  const [cookies, setCookie] = useCookies(['loginToken']);
+  const [cookies, setCookie] = useCookies(['loginToken', 'userInfo']);
 
   /*************** Dont edit below this line ***************/
   function startTimeout() {
@@ -114,18 +112,18 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         break;
     case "player-login" :
         api = "player-login";
-        dataparam = {roomId, playerId, password};
+        dataparam = {roomId, userId : playerId, playerCode: password};
         onSuccess = (data) => {
-            const {loginToken} = data;
-            const maxAge = 24 * 60 * 60;
+            const {loginToken, roomId, userId} = data;
+            const maxAge = 7 * 24 * 60 * 60;
             
             setCookie('loginToken', loginToken, { path: '/', maxAge });
-            window.location.reload();
+            setCookie('userInfo', {roomId, userId}, { path: '/', maxAge });
         };
         break;
       default:
     }
-    if (req !== "" || typeof req !== "undefined") makePostRequest(req, api, dataparam, appContext.loginToken, onSuccess);
+    if (req !== "" || typeof req !== "undefined") makePostRequest(req, api, dataparam, '', onSuccess);
   };
 
   return [
