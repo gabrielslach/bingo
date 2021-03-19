@@ -43,6 +43,14 @@ function DeckViewLogin(props) {
       }
     }, [cookies]);
 
+    // Temporary for UPSCA purpose
+    useEffect(()=>{
+        if (roomId === 'upsca') {
+            const rootPath = match.path.split('/:roomId/')[0]
+            window.location.assign(`${rootPath}/UPSCA`)
+        }
+    }, []);
+
     return (
     <Grid container direction='column' justify='center' alignItems='center' spacing={2} className={classes.root}>
         <Grid item md={6} sm={10} xs={12}>
