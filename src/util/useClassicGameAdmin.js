@@ -78,7 +78,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
       })
       .catch((err) => {
         stopTimeout();
-        onRequestFail(req, err.response.status);
+        onRequestFail(req, (err && err.response) ? err.response.status: '');
         console.log("makePostRequest_err: ", err);
       });
   };

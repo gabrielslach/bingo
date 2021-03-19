@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {Grid, TextField, Button, Paper, Typography} from '@material-ui/core';
+import {Grid, TextField, Button, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
 import {makeStyles, withStyles} from '@material-ui/core/styles'
 
 import useClassicGameAdmin from '../../util/useClassicGameAdmin';
 import usePlayerLogin from '../../util/usePlayerLogin';
-import PlayerDeckView from './Admin/PlayerDeckView'
+import PlayerDeckView from './Admin/PlayerDeckView';
+import CardView from './CardView';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -16,6 +17,9 @@ const useStyles = makeStyles((theme)=>({
         padding: theme.spacing(2),
         textAlign: 'center'
     },
+    deckViewGrid: {
+        minWidth: '66.7%'
+    }
 }));
 
 const CssTextField = withStyles({
@@ -51,6 +55,9 @@ function ClassicAdmin(props) {
 
     const [cookies, setPlayerLogin] = usePlayerLogin();
     const  [cards = [], players = [], setClassicGameAdmin] = useClassicGameAdmin();
+    const [filteredList, setFilteredList] = useState([])
+    const [selectedCard, setSelectedCard] = useState({});
+    const [openCardDialog, setOpenCardDialog] = useState(false);
 
     const handleCreatePlayer = e => {
         e.preventDefault();
@@ -67,6 +74,35 @@ function ClassicAdmin(props) {
         e.preventDefault();
         const password = e.target.password.value;
         setPlayerLogin('login', {roomId, password});
+    };
+
+    const filterFx = searchTxt => item => {
+        const {id, name, email} = item.player;
+
+        const itemToString = `${id} ${name} ${email}`;
+
+        return (itemToString.toUpperCase().indexOf(searchTxt.toUpperCase()) >= 0);
+    }
+
+    const handleSearch = e => {
+        e.preventDefault();
+        const searchText = e.target.searchText.value;
+        if (searchText.length > 0) {
+          const filtered = players.filter(filterFx(searchText));
+          setFilteredList(filtered);
+        } else {
+            setFilteredList(players);
+        }
+    };
+
+    const handleSelectCard = (card) => {
+        setSelectedCard(card);
+        setOpenCardDialog(true);
+    };
+
+    const handleCloseCardDialog = () => {
+        setOpenCardDialog(false);
+        setSelectedCard({});
     }
 
     useEffect(() => {
@@ -74,6 +110,10 @@ function ClassicAdmin(props) {
         setClassicGameAdmin("get-player-all", { roomId });
       }
     }, [cookies]);
+    
+    useEffect(() => {
+        setFilteredList(players);
+      }, [players]);
 
     return (
         <Grid container direction='column' justify='center' alignItems='center' spacing={2} className={classes.root}>
@@ -125,17 +165,37 @@ function ClassicAdmin(props) {
     </Paper>
     </Grid>
     <Grid item xs={12}>
-        <CssTextField
-            label="Search Player Deck"
-            variant="outlined"
-            id="custom-css-outlined-input"
-        />
+        <form onSubmit={handleSearch}>
+            <Grid container direction='row' spacing={1} alignItems='center'> 
+                <Grid item>
+                    <CssTextField
+                        label="Search Player"
+                        variant="outlined"
+                        size='small'
+                        id="custom-css-outlined-input"
+                        name='searchText'
+                    />
+                </Grid>
+                <Grid item>
+                    <Button type='submit' variant='contained' fullWidth>Search</Button>
+                </Grid>
+            </Grid>  
+        </form>
     </Grid>
-    {players.map(item => (
-        <Grid item  md={8} sm={12} xs={12} key={`${item.player.id}-deck-view`}>
-        <PlayerDeckView items={item.cards} playerName={`${item.player.id} ${item.player.name}`} />
-    </Grid>
+    {filteredList.map(item => (
+        <Grid item  md={8} sm={12} xs={12} key={`${item.player.id}-deck-view`} className={classes.deckViewGrid} >
+            <PlayerDeckView items={item.cards} playerInfo={item.player} onSelectCard={handleSelectCard} />
+        </Grid>
     ))}
+    <Dialog open={openCardDialog} onClose={handleCloseCardDialog}>
+        <DialogContent>
+            <CardView items={selectedCard.cells} cardId={selectedCard.id} />
+        </DialogContent>
+        <DialogActions>
+            <Button onClick={handleCloseCardDialog}>Close</Button>
+            <Button variant='contained'>Simulate</Button>
+        </DialogActions>
+    </Dialog>
     </Grid>
     )
   }

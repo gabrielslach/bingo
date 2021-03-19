@@ -31,7 +31,7 @@ const Row = ({items = []}) => (
 )
 
 function Card(props) {
-    const {items=[], onSelectCard, cardId = ''} = props;
+    const {items=[], onSelectCard=()=>{}, cardId = ''} = props;
     const classes = useStyles();
 
     return(

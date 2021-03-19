@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-import {Grid, Typography, Paper} from '@material-ui/core/';
+import {Grid, Typography, Paper, Button} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Card from './Card'
@@ -17,21 +17,63 @@ const useStyles = makeStyles((theme)=>({
         '& h5': {
             color: 'white',
             textShadow: '2px 2px 4px #000000'
-        }
+        },
     },
+    infoPaper: {
+        marginTop: theme.spacing(1),
+        backgroundColor: 'white',
+        width: '40vh',
+        padding: theme.spacing(1),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
+        borderRadius: '2vh',
+        boxShadow: '2px 2px 4px #000000'
+    },
+    showBtn: {
+        backgroundColor: 'white',
+        borderRadius: '2vh',
+        marginTop: theme.spacing(1),
+    },
+    linkBtn: {
+        cursor: 'pointer'
+    }
 }))
 
 function PlayerDeckView(props) {
-    const {items = [], onSelectCard, playerName=''} = props;
+    const {items = [], onSelectCard = () => {}, playerInfo = {}, showPasswordProp = false} = props;
     const classes = useStyles();
+
+    const [showPlayerInfo, setShowPlayerInfo] = useState(false);
+    
+    const {id, name, code, email} = playerInfo;
+
+    const toggleShowDetails = () => {
+        setShowPlayerInfo(!showPlayerInfo)
+    }
     
     return(
         <Paper variant="outlined" className={classes.paperRoot}>
-            <Typography variant='h5'><b>{playerName}'s Deck</b></Typography>
-            <Grid container spacing={1} className={classes.gridRoot}>
+            <Typography variant='h5'>{id} <b>{name}'s Deck</b></Typography>
+            {(showPasswordProp || showPlayerInfo) ?
+                <Paper className={classes.infoPaper}>
+                    <Grid container direction='row' justify='space-between' >
+                        <Grid item>
+                            <Typography variant='subtitle2'>
+                                Email: <b>{email.length ? email : '-'}</b> &nbsp;&nbsp;&nbsp; Code: <b>{code}</b>
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant='subtitle2' onClick={toggleShowDetails} className={classes.linkBtn} ><u>HIDE</u></Typography>
+                        </Grid>
+                    </Grid>
+                </Paper>
+                :
+                <Button variant="contained" size='small' className={classes.showBtn} onClick={toggleShowDetails} >Show Details</Button>
+            }
+            <Grid container direction='row' spacing={1} className={classes.gridRoot}>
                 {items.map((item,index)=>
                     <Grid item key={`cards-${index}`}>
-                        <Card items={item.cells} onSelectCard={()=>onSelectCard(index)} cardId={item.id} />
+                        <Card items={item.cells} onSelectCard={()=>onSelectCard(item)} cardId={item.id} />
                     </Grid>
                 )}
             </Grid>

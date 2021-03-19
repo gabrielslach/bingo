@@ -40,7 +40,8 @@ function DeckView(props) {
             const rootPath = match.path.split('/:roomId/:playerId')[0]
             window.location.assign(`${rootPath}/${roomId}`)
         };
-    }, [cookies])
+    }, [cookies]);
+    
     return (
         <Grid container direction='row' alignItems = 'center' spacing={2} className={classes.root}>
             <Grid item className={classes.headers}>
