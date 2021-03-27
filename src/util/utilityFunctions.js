@@ -20,7 +20,7 @@ export const postRequest = (action, dataParameters, loginToken) => {
     timeout: 30000,
     headers: {
       "Content-Type": "application/json",
-      authorization: "Bearer " + loginToken,
+      Authorization: "Bearer " + loginToken,
     },
   });
 };
