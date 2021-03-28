@@ -30,7 +30,7 @@ function DeckView(props) {
 
     const {playerId} = useParams();
     
-    const [cards = [], players = [], setClassicGameAdmin ] = useClassicGameAdmin();
+    const [cards = [], players = [], isLoading, setClassicGameAdmin ] = useClassicGameAdmin();
     const [cookies] = usePlayerLogin();
 
     useEffect(()=> {

@@ -14,15 +14,13 @@ const displayToast = (message, type, displayDuration) => {
   });
 };
 
-export default function useClassicGameAdmin(vars) { // You could use this var to set something on the local state.
-  let [cookies, setCookie, removeCookie] = useCookies(['loginToken']);
+export default function useGameDrawer(vars) { // You could use this var to set something on the local state.
+  let [cookies, setCookie, removeCookie] = useCookies(['loginToken', 'pickedCells']);
 
   var timeOutVar;
 
   //states
-  const [players, setPlayers] = useState([]);
-  const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [pickedCells, setPickedCells] = useState([]);
 
   /*************** Dont edit below this line ***************/
   function startTimeout() {
@@ -53,13 +51,14 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   const onRequestFail = (req, status) => {
     if (status === 401) {
       removeCookie('loginToken', {path: '/'});
-      setIsLoading(false);
       console.log('Token reset.', cookies)
     }
 
     console.log(
       "Server Error: Please contact your server administrator.",
     );
+
+    alert(status || 'Server Error. Please reload the page.');
     
     displayToast(
         status || 'Server Error',
@@ -92,39 +91,30 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     var dataparam = {};
     let onSuccess = () => {};
     const { roomId } = vars;
-    setIsLoading(true);
+    
     startTimeout();
     switch (req) {
-      case "get-player":
-        const {playerId} = vars;
-        api += "get-player";
-        dataparam = {playerId, userId: playerId, roomId}; // This are the parameters or arguments supplied on the post request.
+      case "get-picked-cells":
+        if (cookies.pickedCells && cookies.pickedCells.length > 0) {
+          setPickedCells(cookies.pickedCells);
+          return;
+        };
+        api += "get-picked-cells";
+        dataparam = {userId: 'admin', roomId}; // This are the parameters or arguments supplied on the post request.
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
-            setCards(data.cards);
-            setPlayers(data.player);
-            setIsLoading(false);
+            setPickedCells(data.pickedCells);
         }
         break;
-      case "get-player-all":
-        api += "get-player-all";
+      case "pick-cell":
+        api += "pick-cell";
         dataparam = {userId: 'admin', roomId};
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
-            setPlayers(data.players.reverse());
-            setIsLoading(false);
+            setPickedCells(data.pickedCells);
+            
+            const maxAge = 7 * 24 * 60 * 60;
+            
+            setCookie('pickedCells', data.pickedCells, { path: '/', maxAge });
         }
-        break;
-    case "register-player" :
-        const {
-            name, 
-            email, 
-            noOfCards,
-        } = vars;
-        api += "register-player";
-        dataparam = {name, email, noOfCards, roomId, userId: 'admin'};
-        onSuccess = (data) => {
-            makeRequest('get-player-all', {roomId})
-            setIsLoading(false);
-        };
         break;
       default:
     }
@@ -132,9 +122,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   };
 
   return [
-    cards,
-    players,
-    isLoading,
+    pickedCells,
     makeRequest,
   ];
 }

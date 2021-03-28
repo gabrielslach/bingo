@@ -1,12 +1,27 @@
 import React, {useEffect, useState} from 'react';
 
-import {Grid, TextField, Button, Paper, Typography, Dialog, DialogTitle, DialogContent, DialogActions} from '@material-ui/core';
+import {
+    Grid, 
+    TextField, 
+    Button, 
+    Paper, 
+    Typography, 
+    Dialog, 
+    DialogContent, 
+    DialogActions,
+    Backdrop,
+    CircularProgress
+} from '@material-ui/core';
 import {makeStyles, withStyles} from '@material-ui/core/styles'
+
+import {useRouteMatch} from 'react-router-dom';
 
 import useClassicGameAdmin from '../../util/useClassicGameAdmin';
 import usePlayerLogin from '../../util/usePlayerLogin';
 import PlayerDeckView from './Admin/PlayerDeckView';
 import CardView from './CardView';
+
+import useGameDrawer from '../../util/useGameDrawer';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -19,7 +34,11 @@ const useStyles = makeStyles((theme)=>({
     },
     deckViewGrid: {
         minWidth: '66.7%'
-    }
+    }, 
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+    },
 }));
 
 const CssTextField = withStyles({
@@ -52,9 +71,11 @@ const CssTextField = withStyles({
 function ClassicAdmin(props) {
     const {roomId} = props;
     const classes = useStyles();
+    const match = useRouteMatch();
 
     const [cookies, setPlayerLogin] = usePlayerLogin();
-    const  [cards = [], players = [], setClassicGameAdmin] = useClassicGameAdmin();
+    const  [cards = [], players = [], isLoading, setClassicGameAdmin] = useClassicGameAdmin();
+    const [pickedCells, setPickedCells] = useGameDrawer();
     const [filteredList, setFilteredList] = useState([])
     const [selectedCard, setSelectedCard] = useState({});
     const [openCardDialog, setOpenCardDialog] = useState(false);
@@ -62,6 +83,10 @@ function ClassicAdmin(props) {
     const handleCreatePlayer = e => {
         e.preventDefault();
         const {name, email, noOfCards} = e.target;
+        if (name.value.length < 1 || parseInt(noOfCards.value) < 1) {
+            alert('Incomplete player details!');
+            return;
+        }
         setClassicGameAdmin('register-player', {
             name: name.value,
             email: email.value,
@@ -103,6 +128,18 @@ function ClassicAdmin(props) {
     const handleCloseCardDialog = () => {
         setOpenCardDialog(false);
         setSelectedCard({});
+    };
+
+    const handleGoToGameDrawer = () => {
+        let gameDrawerUrl = match.url
+
+        if (gameDrawerUrl[gameDrawerUrl.length - 1] === '/' ||
+          gameDrawerUrl[gameDrawerUrl.length - 1] === '\\') {
+            gameDrawerUrl += 'game-drawer';
+          } else {
+            gameDrawerUrl += '/game-drawer';
+          }
+        window.open(gameDrawerUrl);
     }
 
     useEffect(() => {
@@ -114,6 +151,11 @@ function ClassicAdmin(props) {
     useEffect(() => {
         setFilteredList(players);
       }, [players]);
+
+      useEffect(()=> {
+        document.title = 'BINGO! Admin';
+        setPickedCells('get-picked-cells', {roomId});
+      }, [])
 
     return (
         <Grid container direction='column' justify='center' alignItems='center' spacing={2} className={classes.root}>
@@ -157,7 +199,7 @@ function ClassicAdmin(props) {
                     </form>
                 </Grid>
                 <Grid item>
-                    <Button variant='contained'>Game Draw</Button>
+                    <Button variant='contained' onClick={handleGoToGameDrawer} >Game Draw</Button>
                 </Grid>
             </React.Fragment>
             }
@@ -196,6 +238,9 @@ function ClassicAdmin(props) {
             <Button variant='contained'>Simulate</Button>
         </DialogActions>
     </Dialog>
+    <Backdrop className={classes.backdrop} open={isLoading}>
+        <CircularProgress color="inherit" />
+    </Backdrop>
     </Grid>
     )
   }
