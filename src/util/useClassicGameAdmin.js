@@ -88,7 +88,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   /*************** Dont edit above this line ***************/
 
   const makeRequest = (req, vars = {}) => {
-    var api = "api/";
+    var api = "";
     var dataparam = {};
     let onSuccess = () => {};
     const { roomId } = vars;
