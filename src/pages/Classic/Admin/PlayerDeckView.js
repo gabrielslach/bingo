@@ -2,6 +2,11 @@ import React, {useState} from 'react'
 
 import {Grid, Typography, Paper, Button} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+    Delete as DeleteIcon, 
+    NoteAdd as NoteAddIcon,
+    RemoveCircleOutline as RemoveCircleOutlineIcon
+} from '@material-ui/icons/';
 
 import Card from './Card'
 
@@ -36,6 +41,12 @@ const useStyles = makeStyles((theme)=>({
     },
     linkBtn: {
         cursor: 'pointer'
+    },
+    leftBtn: {
+        marginRight: theme.spacing(1)
+    },
+    btn: {
+        marginTop: theme.spacing(1)
     }
 }))
 
@@ -53,7 +64,38 @@ function PlayerDeckView(props) {
     
     return(
         <Paper variant="outlined" className={classes.paperRoot}>
-            <Typography variant='h5'>{id} <b>{name}'s Deck</b></Typography>
+            <Grid container direction='row' justify='space-between' alignItems='center' >
+                <Grid item>
+                    <Typography variant='h5'>{id} <b>{name}'s Deck</b></Typography>
+                </Grid>
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        className={`${classes.leftBtn} ${classes.btn}`}
+                        startIcon={<NoteAddIcon />}
+                        size='small'
+                    >
+                        Add Card
+                    </Button>
+                    <Button
+                        variant="contained"
+                        className={`${classes.leftBtn} ${classes.btn}`}
+                        startIcon={<DeleteIcon />}
+                        size='small'
+                    >
+                        Delete Card
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className={`${classes.btn}`}
+                        startIcon={<RemoveCircleOutlineIcon />}
+                        size='small'
+                    >
+                        Delete Player
+                    </Button>
+                </Grid>
+            </Grid>
             {(showPasswordProp || showPlayerInfo) ?
                 <Paper className={classes.infoPaper}>
                     <Grid container direction='row' justify='space-between' >
