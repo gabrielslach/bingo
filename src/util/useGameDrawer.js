@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { toast } from "react-toastify";
 
@@ -15,12 +15,16 @@ const displayToast = (message, type, displayDuration) => {
 };
 
 export default function useGameDrawer(vars) { // You could use this var to set something on the local state.
-  let [cookies, setCookie, removeCookie] = useCookies(['loginToken', 'pickedCells']);
+  let [cookies, setCookie, removeCookie] = useCookies(['loginToken']);
 
   var timeOutVar;
 
   //states
   const [pickedCells, setPickedCells] = useState([]);
+
+  useEffect(()=>{
+    return window.localStorage.removeItem('pickedCells');
+  }, [])
 
   /*************** Dont edit below this line ***************/
   function startTimeout() {
@@ -49,9 +53,11 @@ export default function useGameDrawer(vars) { // You could use this var to set s
   };
 
   const onRequestFail = (req, status) => {
-    if (status === 401) {
+    if (status === 401 || status === 403) {
       removeCookie('loginToken', {path: '/'});
+      removeCookie('userInfo', {path: '/'});
       console.log('Token reset.', cookies)
+      window.location.assign(window.location.href.substring(0,window.location.href.length - 11))
     }
 
     console.log(
@@ -95,10 +101,11 @@ export default function useGameDrawer(vars) { // You could use this var to set s
     startTimeout();
     switch (req) {
       case "get-picked-cells":
-        if (cookies.pickedCells && cookies.pickedCells.length > 0) {
-          setPickedCells(cookies.pickedCells);
+        const pickedCells_local = window.localStorage.getItem('pickedCells');
+        if (pickedCells_local) {
+          setPickedCells(JSON.parse(pickedCells_local));
           return;
-        };
+        }
         api += "get-picked-cells";
         dataparam = {userId: 'admin', roomId}; // This are the parameters or arguments supplied on the post request.
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
@@ -111,9 +118,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
             setPickedCells(data.pickedCells);
             
-            const maxAge = 7 * 24 * 60 * 60;
-            
-            setCookie('pickedCells', data.pickedCells, { path: '/', maxAge });
+            window.localStorage.setItem('pickedCells', JSON.stringify(data.pickedCells))
         }
         break;
       default:

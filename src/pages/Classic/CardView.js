@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import {Paper, Typography} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
@@ -45,7 +45,7 @@ const Row = (props) => {
 )}
 
 function Card(props) {
-    const {items=[], cardId = ''} = props;
+    const {items=[], cardId = '', pickedCells=[]} = props;
     const classes = useStyles();
 
     const [selected, setSelected] = useState([])
@@ -61,6 +61,12 @@ function Card(props) {
 
         setSelected(selected_copy)
     }
+
+    useEffect(()=>{
+        if (pickedCells.length > 0) {
+            setSelected(pickedCells);
+        };
+    }, [pickedCells])
 
     return(
         <Paper classes={{root: classes.root}} >

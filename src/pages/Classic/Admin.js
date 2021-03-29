@@ -140,7 +140,11 @@ function ClassicAdmin(props) {
             gameDrawerUrl += '/game-drawer';
           }
         window.open(gameDrawerUrl);
-    }
+    };
+
+    const handleSimulateCard = () => {
+        setPickedCells('get-picked-cells', {roomId});
+    };
 
     useEffect(() => {
       if (cookies.loginToken) {
@@ -154,7 +158,9 @@ function ClassicAdmin(props) {
 
       useEffect(()=> {
         document.title = 'BINGO! Admin';
-        setPickedCells('get-picked-cells', {roomId});
+        if (cookies.userInfo && cookies.userInfo.userId === 'admin'){
+            setPickedCells('get-picked-cells', {roomId});
+        };
       }, [])
 
     return (
@@ -226,16 +232,20 @@ function ClassicAdmin(props) {
     </Grid>
     {filteredList.map(item => (
         <Grid item  md={8} sm={12} xs={12} key={`${item.player.id}-deck-view`} className={classes.deckViewGrid} >
-            <PlayerDeckView items={item.cards} playerInfo={item.player} onSelectCard={handleSelectCard} />
+            <PlayerDeckView 
+                items={item.cards} 
+                playerInfo={item.player} 
+                onSelectCard={handleSelectCard} 
+                />
         </Grid>
     ))}
     <Dialog open={openCardDialog} onClose={handleCloseCardDialog}>
         <DialogContent>
-            <CardView items={selectedCard.cells} cardId={selectedCard.id} />
+            <CardView items={selectedCard.cells} cardId={selectedCard.id} pickedCells={pickedCells} />
         </DialogContent>
         <DialogActions>
             <Button onClick={handleCloseCardDialog}>Close</Button>
-            <Button variant='contained'>Simulate</Button>
+            <Button variant='contained' onClick={handleSimulateCard}>Refresh</Button>
         </DialogActions>
     </Dialog>
     <Backdrop className={classes.backdrop} open={isLoading}>

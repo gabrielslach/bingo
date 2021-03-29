@@ -53,6 +53,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   const onRequestFail = (req, status) => {
     if (status === 401) {
       removeCookie('loginToken', {path: '/'});
+      removeCookie('userInfo', {path: '/'});
       setIsLoading(false);
       console.log('Token reset.', cookies)
     }

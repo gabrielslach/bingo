@@ -107,6 +107,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
             const maxAge = 24 * 60 * 60;
             
             setCookie('loginToken', loginToken, { path: '/', maxAge });
+            setCookie('userInfo', {roomId, userId: 'admin'}, { path: '/', maxAge });
             window.location.reload();
         };
         break;
