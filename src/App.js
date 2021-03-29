@@ -8,7 +8,8 @@ import {
   Route,
   Link,
   useRouteMatch,
-  useParams
+  useParams,
+  Redirect
 } from "react-router-dom";
 
 import { CookiesProvider } from 'react-cookie';
@@ -86,6 +87,7 @@ function App() {
             <ClassicBingo/>
           </Route>
           <Route path="/">
+            <Redirect to={{pathname:'/classic/UPSCA'}}/>
             {/* <Home/> */}
           </Route>
         </Switch>
