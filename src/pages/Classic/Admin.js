@@ -79,6 +79,11 @@ function ClassicAdmin(props) {
     const [filteredList, setFilteredList] = useState([])
     const [selectedCard, setSelectedCard] = useState({});
     const [openCardDialog, setOpenCardDialog] = useState(false);
+    const [confirmDialogControl, setConfirmDialogControl] = useState({
+        deleteCard: false,
+        deletePlayer: false,
+        addCard: false
+    });
 
     const handleCreatePlayer = e => {
         e.preventDefault();
@@ -145,6 +150,12 @@ function ClassicAdmin(props) {
     const handleSimulateCard = () => {
         setPickedCells('get-picked-cells', {roomId});
     };
+
+    const handleToggleConfirmDlg = (key) => {
+        const confirmDialogControl_ = {...confirmDialogControl};
+        confirmDialogControl_[key] = !confirmDialogControl_[key];
+        setConfirmDialogControl(confirmDialogControl_);
+    }
 
     useEffect(() => {
       if (cookies.loginToken) {
@@ -235,7 +246,10 @@ function ClassicAdmin(props) {
             <PlayerDeckView 
                 items={item.cards} 
                 playerInfo={item.player} 
-                onSelectCard={handleSelectCard} 
+                onSelectCard={handleSelectCard}
+                onDeleteCard={()=>handleToggleConfirmDlg('deleteCard')}
+                onDeletePlayer={()=>handleToggleConfirmDlg('deletePlayer')}
+                onAddCard={()=>handleToggleConfirmDlg('addCard')}
                 />
         </Grid>
     ))}

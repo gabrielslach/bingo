@@ -92,12 +92,11 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     var api = "";
     var dataparam = {};
     let onSuccess = () => {};
-    const { roomId } = vars;
+    const { roomId, playerId, noOfCards } = vars;
     setIsLoading(true);
     startTimeout();
     switch (req) {
       case "get-player":
-        const {playerId} = vars;
         api += "get-player";
         dataparam = {playerId, userId: playerId, roomId}; // This are the parameters or arguments supplied on the post request.
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
@@ -118,10 +117,36 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         const {
             name, 
             email, 
-            noOfCards,
         } = vars;
         api += "register-player";
         dataparam = {name, email, noOfCards, roomId, userId: 'admin'};
+        onSuccess = (data) => {
+            makeRequest('get-player-all', {roomId})
+            setIsLoading(false);
+        };
+        break;
+    case "delete-player" :
+        api += "delete-player";
+        dataparam = {roomId, userId: 'admin', playerId};
+        onSuccess = (data) => {
+            makeRequest('get-player-all', {roomId})
+            setIsLoading(false);
+        };
+        break;
+    case "delete-card" :
+        const {
+            cardId
+        } = vars;
+        api += "delete-card";
+        dataparam = {roomId, userId: 'admin', playerId, cardId};
+        onSuccess = (data) => {
+            makeRequest('get-player-all', {roomId})
+            setIsLoading(false);
+        };
+        break;
+    case "add-card" :
+        api += "add-card";
+        dataparam = {roomId, userId: 'admin', playerId, noOfCards};
         onSuccess = (data) => {
             makeRequest('get-player-all', {roomId})
             setIsLoading(false);

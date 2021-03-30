@@ -51,7 +51,15 @@ const useStyles = makeStyles((theme)=>({
 }))
 
 function PlayerDeckView(props) {
-    const {items = [], onSelectCard = () => {}, playerInfo = {}, showPasswordProp = false} = props;
+    const {
+        items = [], 
+        onSelectCard = () => {}, 
+        playerInfo = {}, 
+        showPasswordProp = false,
+        onDeleteCard,
+        onDeletePlayer,
+        onAddCard
+    } = props;
     const classes = useStyles();
 
     const [showPlayerInfo, setShowPlayerInfo] = useState(false);
@@ -74,6 +82,7 @@ function PlayerDeckView(props) {
                         className={`${classes.leftBtn} ${classes.btn}`}
                         startIcon={<NoteAddIcon />}
                         size='small'
+                        onClick={onAddCard}
                     >
                         Add Card
                     </Button>
@@ -82,6 +91,7 @@ function PlayerDeckView(props) {
                         className={`${classes.leftBtn} ${classes.btn}`}
                         startIcon={<DeleteIcon />}
                         size='small'
+                        onClick={onDeleteCard}
                     >
                         Delete Card
                     </Button>
@@ -91,6 +101,7 @@ function PlayerDeckView(props) {
                         className={`${classes.btn}`}
                         startIcon={<RemoveCircleOutlineIcon />}
                         size='small'
+                        onClick={onDeletePlayer}
                     >
                         Delete Player
                     </Button>
