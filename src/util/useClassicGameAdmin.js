@@ -88,7 +88,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
 
   /*************** Dont edit above this line ***************/
 
-  const makeRequest = (req, vars = {}) => {
+  const makeRequest = (req, vars = {}, event) => {
     var api = "";
     var dataparam = {};
     let onSuccess = () => {};
@@ -123,6 +123,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         onSuccess = (data) => {
             makeRequest('get-player-all', {roomId})
             setIsLoading(false);
+            event.target.reset();
         };
         break;
     case "delete-player" :

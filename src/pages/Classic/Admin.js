@@ -102,7 +102,7 @@ function ClassicAdmin(props) {
             email: email.value,
             noOfCards: noOfCards.value,
             roomId
-        });
+        }, e);
     };
 
     const handleAdminLogin = e => {
