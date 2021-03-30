@@ -21,6 +21,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
 
   //states
   const [pickedCells, setPickedCells] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(()=>{
     return window.localStorage.removeItem('pickedCells');
@@ -45,6 +46,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         console.log(req, ': ', oMessage);
     };
     
+    setIsLoading(false);
     displayToast(
         oMessage,
         oFlag ? toast.TYPE.SUCCESS : toast.TYPE.ERROR,
@@ -97,7 +99,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
     var dataparam = {};
     let onSuccess = () => {};
     const { roomId } = vars;
-    
+    setIsLoading(true);
     startTimeout();
     switch (req) {
       case "get-picked-cells":
@@ -118,6 +120,14 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         window.localStorage.removeItem('pickedCells');
         return;
         break;
+      case "reset-picked-cells":
+        api += "reset-picked-cells";
+        dataparam = {userId: 'admin', roomId};
+        onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
+            setPickedCells([]); //It would be better to get picked cells data from backend but leaning on lessening server requests
+            window.localStorage.removeItem('pickedCells')
+        }
+        break;
       case "pick-cell":
         api += "pick-cell";
         dataparam = {userId: 'admin', roomId};
@@ -134,6 +144,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
 
   return [
     pickedCells,
+    isLoading,
     makeRequest,
   ];
 }

@@ -1,9 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 
-import {Grid, Button, Typography, Paper} from '@material-ui/core';
+import {Grid, Button, Typography, Paper, IconButton, Backdrop, CircularProgress} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
+import {RotateLeft as RotateLeftIcon} from '@material-ui/icons';
+import Image from 'material-ui-image';
 
 import useGameDrawer from '../../util/useGameDrawer';
+import ResetPickedCellsDialog from './GameDrawer/ResetPickedCellsDialog'
 
 const bingo = {
     B: [1,15],
@@ -35,6 +38,18 @@ const useStyles = makeStyles(theme=> ({
         color: 'white',
         textShadow: '2px 2px 4px #000000',
         paddingTop: theme.spacing(3)
+    },
+    backdrop: {
+        zIndex: theme.zIndex.drawer + 1,
+        color: '#fff',
+      },
+    img: {
+        width: '20em',
+        height: 'auto'
+    },
+    credits: {
+        fontSize: '0.5em',
+        color: 'rgba(255,255,255,0.2)'
     }
 }));
 
@@ -42,14 +57,20 @@ const GameDrawer = props => {
     const {roomId} = props;
     const classes = useStyles();
 
-    const [pickedCells, setPickedCells] = useGameDrawer();
+    const [pickedCells, isLoading, setPickedCells] = useGameDrawer();
     const [letter, setLetter] = useState('');
     const [number, setNumber] = useState(0);
     const [intervalId, setIntervalId] = useState(NaN);
     const [isWaiting, setIsWaiting] = useState(false);
     const [pickedCellsForDisplay, setPickedCellsForDisplay] = useState([]);
+    const [resetDialog, setResetDialog] = useState(false);
+    
+    const audio = useRef(new Audio('/bngsnd.mp3'));
 
     const getLetter = number_ => {
+        if (number_ < 1) {
+            return('');
+        }
         switch (true) {
             case (number_ < 16):
                 return('B')
@@ -67,12 +88,14 @@ const GameDrawer = props => {
                 return('O')
                 break;
             default:
+                return('')
                 break;
         };
     };
 
     const handleDrawNumber = () => {
         setPickedCells('pick-cell', {roomId});
+        audio.current.play();
         const rangeStart = 1;
         const rangeEnd = 75;
 
@@ -84,12 +107,23 @@ const GameDrawer = props => {
         setIntervalId(intervalId_);
     };
 
+    const handleReset = () => {
+        setResetDialog(true);
+    };
+
+    const handleConfirmReset = () => {
+        setPickedCells('reset-picked-cells', {roomId});
+    };
+
     useEffect(()=> {
         if (!isNaN(intervalId)) {
             setTimeout(() => {
                 clearInterval(intervalId);
                 setNumber(pickedCells[pickedCells.length - 1]);
                 setIsWaiting(false);
+                
+                audio.current.pause();
+                audio.current.currentTime = 0;
 
                 const pickedCells_ = [...pickedCells];
                 pickedCells_.reverse();
@@ -103,10 +137,12 @@ const GameDrawer = props => {
     }, [pickedCells]);
 
     useEffect(()=>{
-        if (number > 0) {
+        if (number && number > 0) {
             const letter_ = getLetter(number);
             setLetter(letter_);
-        }
+        } else {
+            setLetter('');
+        };
     }, [number]);
     
     useEffect(()=> {
@@ -132,7 +168,11 @@ const GameDrawer = props => {
                     onClick={handleDrawNumber} 
                     disabled={isWaiting || pickedCells.length === 75} 
                     >
-                    {pickedCells.length === 75 ? 'All numbers picked.' : 'Draw Number'}</Button>
+                    {pickedCells.length === 75 ? 'All numbers picked.' : 'Draw Number'}
+                </Button>
+                <IconButton aria-label="delete" className={classes.margin} onClick={handleReset}>
+                    <RotateLeftIcon fontSize="small" />
+                </IconButton>
             </Grid>
             <Grid item>
                 <Grid container direction='row' spacing={2} justify='flex-start'>
@@ -148,6 +188,21 @@ const GameDrawer = props => {
                     })}
                 </Grid>
             </Grid>
+            <ResetPickedCellsDialog open={resetDialog} setOpen={setResetDialog} onConfirm={handleConfirmReset}/>
+            <Backdrop className={classes.backdrop} open={isLoading}>
+                <Grid container direction='column' alignItems='center'>
+                    <Grid item>
+                <div className={classes.img}>
+                    <Image
+                        src='/raffle-loading.gif'
+                        style={{
+                            opacity: 1
+                        }}
+                        />
+                </div></Grid><Grid item>
+                <Typography variant='subtitle2' className={classes.credits}>“Sound effects obtained from https://www.zapsplat.com“</Typography>
+                </Grid></Grid>
+            </Backdrop>
         </Grid>
     );
 };

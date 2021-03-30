@@ -78,7 +78,7 @@ function ClassicAdmin(props) {
 
     const [cookies, setPlayerLogin] = usePlayerLogin();
     const  [cards = [], players = [], isLoading, setClassicGameAdmin] = useClassicGameAdmin();
-    const [pickedCells, setPickedCells] = useGameDrawer();
+    const [pickedCells, isLoading2, setPickedCells] = useGameDrawer();
     const [filteredList, setFilteredList] = useState([])
     const [selectedCard, setSelectedCard] = useState({});
     const [openCardDialog, setOpenCardDialog] = useState(false);

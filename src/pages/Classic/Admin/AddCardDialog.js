@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {TextField} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
-import DialogScaffold from './DialogScaffold'
+import DialogScaffold from '../CommonComponents/DialogScaffold'
 
 const useStyles = makeStyles(theme=> ({
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import {Grid} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
 import DialogScaffold from '../CommonComponents/DialogScaffold'
@@ -8,12 +7,12 @@ const useStyles = makeStyles(theme=> ({
 
 }));
 
-const DeletePlayerDialog = (props) => {
-    const {open, setOpen, onConfirm, playerId, playerName} = props;
+const ResetPickedCellsDialog = (props) => {
+    const {open, setOpen, onConfirm} = props;
     const classes = useStyles();
 
     const handleConfirm = () => {
-        onConfirm(playerId);
+        onConfirm();
         setOpen();
     };
 
@@ -22,11 +21,11 @@ const DeletePlayerDialog = (props) => {
         open={open}
         setOpen={setOpen}
         onConfirm={handleConfirm}
-        title='Delete Player'
-        contentText={`Are you sure to delete player ${playerId} ${playerName}?`}
+        title='Reset Draw Numbers'
+        contentText={`Are you sure to reset the draw? This can't be undone.`}
         />
     );
 };
 
-export default DeletePlayerDialog;
+export default ResetPickedCellsDialog;
 
