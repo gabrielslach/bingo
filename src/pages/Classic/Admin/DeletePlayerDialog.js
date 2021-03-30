@@ -14,6 +14,7 @@ const DeletePlayerDialog = (props) => {
 
     const handleConfirm = () => {
         onConfirm(playerId);
+        setOpen();
     };
 
     return(

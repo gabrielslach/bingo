@@ -82,16 +82,16 @@ function PlayerDeckView(props) {
                         className={`${classes.leftBtn} ${classes.btn}`}
                         startIcon={<NoteAddIcon />}
                         size='small'
-                        onClick={onAddCard}
+                        onClick={()=>onAddCard(id, name)}
                     >
-                        Add Card
+                        Add Cards
                     </Button>
                     <Button
                         variant="contained"
                         className={`${classes.leftBtn} ${classes.btn}`}
                         startIcon={<DeleteIcon />}
                         size='small'
-                        onClick={onDeleteCard}
+                        onClick={()=>onDeleteCard(id, name)}
                     >
                         Delete Card
                     </Button>
@@ -101,7 +101,7 @@ function PlayerDeckView(props) {
                         className={`${classes.btn}`}
                         startIcon={<RemoveCircleOutlineIcon />}
                         size='small'
-                        onClick={onDeletePlayer}
+                        onClick={()=>onDeletePlayer(id, name)}
                     >
                         Delete Player
                     </Button>

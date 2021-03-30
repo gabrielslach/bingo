@@ -110,7 +110,13 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         dataparam = {userId: 'admin', roomId}; // This are the parameters or arguments supplied on the post request.
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
             setPickedCells(data.pickedCells);
+            
+            window.localStorage.setItem('pickedCells', JSON.stringify(data.pickedCells))
         }
+        break;
+      case "reset-picked-cells-cache":
+        window.localStorage.removeItem('pickedCells');
+        return;
         break;
       case "pick-cell":
         api += "pick-cell";

@@ -20,7 +20,7 @@ const FieldsGrid = (props) => {
             label='No. of cards'
             margin='dense'
             value={noOfCards}
-            onChange={setNoOfCards}
+            onChange={e=>setNoOfCards(e.target.value)}
         />
         }
     </React.Fragment>);
@@ -41,22 +41,30 @@ const AddCardDialog = (props) => {
     const handleConfirm = () => {
         if (confirmFinal) {
             onConfirm(playerId, noOfCards);
+            setOpen();
+            setNoOfCards('');
+            setConfirmFinal(false);
         } else if (noOfCards.length > 0) {
             setConfirmFinal(true);
         };
-    }
+    };
+
+    const handleCancel = ()=>{
+        setNoOfCards('');
+    };
 
     return (
         <DialogScaffold
         open={open}
         setOpen={handleOpen}
         onConfirm={handleConfirm}
+        onCancel={handleCancel}
         title='Add Cards'
         contentText={`${confirmFinal ? 
             `Are you sure to add ${noOfCards} cards to player ${playerId} ${playerName}'s deck?` :
             `Specify how many cards you want to add.`
             }`}
-        fieldsGrid={<FieldsGrid 
+        FieldsGrid={<FieldsGrid 
                     noOfCards={noOfCards} 
                     setNoOfCards={setNoOfCards} 
                     confirmFinal={confirmFinal}

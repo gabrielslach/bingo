@@ -12,12 +12,19 @@ export default function DialogScaffold(props) {
       setOpen, 
       title='', 
       contentText='', 
-      fieldsGrid=()=>(<div/>),
-      confirmText='Confirm'
+      FieldsGrid=<div/>,
+      confirmText='Confirm',
+      onConfirm,
+      onCancel=()=>{}
     } = props;
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleCancel = () => {
+    setOpen(false);
+    onCancel();
   };
 
   return (
@@ -27,13 +34,13 @@ export default function DialogScaffold(props) {
           <DialogContentText>
             {contentText}
           </DialogContentText>
-          {fieldsGrid}
+          {FieldsGrid}
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>
+          <Button onClick={handleCancel}>
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={onConfirm} color="primary">
             {confirmText}
           </Button>
         </DialogActions>

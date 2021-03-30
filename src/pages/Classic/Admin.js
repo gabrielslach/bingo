@@ -20,6 +20,9 @@ import useClassicGameAdmin from '../../util/useClassicGameAdmin';
 import usePlayerLogin from '../../util/usePlayerLogin';
 import PlayerDeckView from './Admin/PlayerDeckView';
 import CardView from './CardView';
+import DeleteCardDialog from './Admin/DeleteCardDialog';
+import DeletePlayerDialog from './Admin/DeletePlayerDialog';
+import AddCardDialog from './Admin/AddCardDialog';
 
 import useGameDrawer from '../../util/useGameDrawer';
 
@@ -79,6 +82,8 @@ function ClassicAdmin(props) {
     const [filteredList, setFilteredList] = useState([])
     const [selectedCard, setSelectedCard] = useState({});
     const [openCardDialog, setOpenCardDialog] = useState(false);
+    const [enableRefresh, setEnableRefresh] = useState(0); //refresh countdown timer
+    const [selectedPlayerInfo, setSelectedPlayerInfo] = useState({});
     const [confirmDialogControl, setConfirmDialogControl] = useState({
         deleteCard: false,
         deletePlayer: false,
@@ -126,6 +131,7 @@ function ClassicAdmin(props) {
     };
 
     const handleSelectCard = (card) => {
+        setPickedCells('get-picked-cells', {roomId});
         setSelectedCard(card);
         setOpenCardDialog(true);
     };
@@ -147,15 +153,44 @@ function ClassicAdmin(props) {
         window.open(gameDrawerUrl);
     };
 
-    const handleSimulateCard = () => {
+    const handleClickRefresh = () => {
+        let refreshTime = 10;
+        setEnableRefresh(refreshTime);
+        const intervalRef = setInterval(() => {
+            refreshTime--;
+            setEnableRefresh(refreshTime);
+        }, 1000);
+        
+        setTimeout(() => {
+            clearInterval(intervalRef);
+        }, 10000);
+        setPickedCells('reset-picked-cells-cache');
         setPickedCells('get-picked-cells', {roomId});
     };
 
-    const handleToggleConfirmDlg = (key) => {
+    const handleToggleConfirmDlg = (key) => (id, name) => {
         const confirmDialogControl_ = {...confirmDialogControl};
         confirmDialogControl_[key] = !confirmDialogControl_[key];
         setConfirmDialogControl(confirmDialogControl_);
-    }
+        if (id) {
+            setSelectedPlayerInfo({
+                id, 
+                name
+            });
+        };
+    };
+
+    const handleAddCardConfirm = (playerId, noOfCards) => {
+        setClassicGameAdmin('add-card', {roomId, playerId, noOfCards});
+    };
+
+    const handleDeleteCardConfirm = (playerId, cardId) => {
+        setClassicGameAdmin('delete-card', {roomId, playerId, cardId});
+    };
+
+    const handleDeletePlayerConfirm = (playerId) => {
+        setClassicGameAdmin('delete-player', {roomId, playerId});
+    };
 
     useEffect(() => {
       if (cookies.loginToken) {
@@ -247,9 +282,9 @@ function ClassicAdmin(props) {
                 items={item.cards} 
                 playerInfo={item.player} 
                 onSelectCard={handleSelectCard}
-                onDeleteCard={()=>handleToggleConfirmDlg('deleteCard')}
-                onDeletePlayer={()=>handleToggleConfirmDlg('deletePlayer')}
-                onAddCard={()=>handleToggleConfirmDlg('addCard')}
+                onDeleteCard={handleToggleConfirmDlg('deleteCard')}
+                onDeletePlayer={handleToggleConfirmDlg('deletePlayer')}
+                onAddCard={handleToggleConfirmDlg('addCard')}
                 />
         </Grid>
     ))}
@@ -259,9 +294,30 @@ function ClassicAdmin(props) {
         </DialogContent>
         <DialogActions>
             <Button onClick={handleCloseCardDialog}>Close</Button>
-            <Button variant='contained' onClick={handleSimulateCard}>Refresh</Button>
+            <Button variant='contained' onClick={handleClickRefresh} disabled={enableRefresh > 0}>Refresh {enableRefresh > 0 && `(${enableRefresh})`}</Button>
         </DialogActions>
     </Dialog>
+    <DeletePlayerDialog 
+        open={confirmDialogControl.deletePlayer} 
+        setOpen={handleToggleConfirmDlg('deletePlayer')}
+        onConfirm={handleDeletePlayerConfirm}
+        playerId={selectedPlayerInfo.id}
+        playerName={selectedPlayerInfo.name}
+        />
+    <DeleteCardDialog 
+        open={confirmDialogControl.deleteCard} 
+        setOpen={handleToggleConfirmDlg('deleteCard')}
+        onConfirm={handleDeleteCardConfirm}
+        playerId={selectedPlayerInfo.id}
+        playerName={selectedPlayerInfo.name}
+        />
+    <AddCardDialog 
+        open={confirmDialogControl.addCard} 
+        setOpen={handleToggleConfirmDlg('addCard')}
+        onConfirm={handleAddCardConfirm}
+        playerId={selectedPlayerInfo.id}
+        playerName={selectedPlayerInfo.name}
+        />
     <Backdrop className={classes.backdrop} open={isLoading}>
         <CircularProgress color="inherit" />
     </Backdrop>

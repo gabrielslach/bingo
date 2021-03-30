@@ -20,7 +20,7 @@ const FieldsGrid = (props) => {
             label='Card No.'
             margin='dense'
             value={cardId}
-            onChange={setCardId}
+            onChange={e=>setCardId(e.target.value)}
         />
         }
     </React.Fragment>);
@@ -41,22 +41,30 @@ const DeleteCardDialog = (props) => {
     const handleConfirm = () => {
         if (confirmFinal) {
             onConfirm(playerId, cardId);
+            setOpen();
+            setCardId('');
+            setConfirmFinal(false);
         } else if (cardId.length > 0) {
             setConfirmFinal(true);
         };
-    }
+    };
+
+    const handleCancel = () => {
+        setCardId('');
+    };
 
     return (
         <DialogScaffold
         open={open}
         setOpen={handleOpen}
         onConfirm={handleConfirm}
+        onCancel={handleCancel}
         title='Delete Card'
         contentText={`${confirmFinal ? 
             `Are you sure to delete player ${playerId} ${playerName}'s card ${cardId}?` :
             `Specify which card you want to delete.`
             }`}
-        fieldsGrid={<FieldsGrid 
+        FieldsGrid={<FieldsGrid 
                     cardId={cardId} 
                     setCardId={setCardId} 
                     confirmFinal={confirmFinal}
