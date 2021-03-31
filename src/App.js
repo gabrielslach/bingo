@@ -86,6 +86,15 @@ function App() {
           <Route path='/classic'>
             <ClassicBingo/>
           </Route>
+          <Route path='/upsca'>
+            <Redirect to={{pathname:'/classic/UPSCA'}}/>
+          </Route>
+          <Route path='/UPSCA'>
+            <Redirect to={{pathname:'/classic/UPSCA'}}/>
+          </Route>
+          <Route path='/upsca-admin'>
+            <Redirect to={{pathname:'/classic/UPSCA/admin'}}/>
+          </Route>
           <Route path="/">
             <Redirect to={{pathname:'/classic/UPSCA'}}/>
             {/* <Home/> */}

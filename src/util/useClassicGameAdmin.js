@@ -41,8 +41,10 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         onSuccess(data);
     } else {
         console.log(req, ': ', oMessage);
+        alert(oMessage);
     };
     
+    setIsLoading(false);
     displayToast(
         oMessage,
         oFlag ? toast.TYPE.SUCCESS : toast.TYPE.ERROR,
@@ -54,10 +56,11 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     if (status === 401) {
       removeCookie('loginToken', {path: '/'});
       removeCookie('userInfo', {path: '/'});
-      setIsLoading(false);
       console.log('Token reset.', cookies)
     }
-
+    
+    setIsLoading(false);
+    alert(status);
     console.log(
       "Server Error: Please contact your server administrator.",
     );
@@ -102,7 +105,6 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
             setCards(data.cards);
             setPlayers(data.player);
-            setIsLoading(false);
         }
         break;
       case "get-player-all":
@@ -110,7 +112,6 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         dataparam = {userId: 'admin', roomId};
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
             setPlayers(data.players.reverse());
-            setIsLoading(false);
         }
         break;
     case "register-player" :
@@ -121,8 +122,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         api += "register-player";
         dataparam = {name, email, noOfCards, roomId, userId: 'admin'};
         onSuccess = (data) => {
-            makeRequest('get-player-all', {roomId})
-            setIsLoading(false);
+            makeRequest('get-player-all', {roomId});
             event.target.reset();
         };
         break;
@@ -130,8 +130,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         api += "delete-player";
         dataparam = {roomId, userId: 'admin', playerId};
         onSuccess = (data) => {
-            makeRequest('get-player-all', {roomId})
-            setIsLoading(false);
+            makeRequest('get-player-all', {roomId});
         };
         break;
     case "delete-card" :
@@ -141,16 +140,14 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         api += "delete-card";
         dataparam = {roomId, userId: 'admin', playerId, cardId};
         onSuccess = (data) => {
-            makeRequest('get-player-all', {roomId})
-            setIsLoading(false);
+            makeRequest('get-player-all', {roomId});
         };
         break;
     case "add-card" :
         api += "add-card";
         dataparam = {roomId, userId: 'admin', playerId, noOfCards};
         onSuccess = (data) => {
-            makeRequest('get-player-all', {roomId})
-            setIsLoading(false);
+            makeRequest('get-player-all', {roomId});
         };
         break;
       default:

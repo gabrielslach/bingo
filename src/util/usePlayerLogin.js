@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useRef } from "react";
 
 import { toast } from "react-toastify";
 
@@ -16,21 +16,22 @@ const displayToast = (message, type, displayDuration) => {
 
 export default function useClassicGameAdmin(vars) { // You could use this var to set something on the local state.
 
-  var timeOutVar;
+  const timeOutVar = useRef(null);
 
   //states
   
-  const [cookies, setCookie] = useCookies(['loginToken', 'userInfo']);
+  const [cookies, setCookie, removeCookie] = useCookies(['loginToken', 'userInfo']);
+  const [isLoading, setIsLoading] = useState(false);
 
   /*************** Dont edit below this line ***************/
   function startTimeout() {
-    timeOutVar = setTimeout(function () {
+    timeOutVar.current = setTimeout(function () {
     console.log("Server Timeout");
     }, 120000);
   }
 
   function stopTimeout() {
-    clearTimeout(timeOutVar);
+    clearTimeout(timeOutVar.current);
   }
 
   const onRequestSuccess = (req, resData, onSuccess) => {
@@ -38,6 +39,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     if (oFlag) {
         onSuccess(data);
     } else {
+        alert(oMessage);
         console.log(req, ': ', oMessage);
     };
     
@@ -52,7 +54,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     console.log(
       "Server Error: Please contact your server administrator.",
     );
-    
+    alert(status);
     displayToast(
         status || 'Server Error',
         toast.TYPE.ERROR,
@@ -64,6 +66,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
     postRequest(api, dataparam, loginToken)
       .then((res) => {
         stopTimeout();
+        setIsLoading(false);
         if (res.status !== 200 && res.status !== 201) {
           onRequestFail(req, res.status);
         } else {
@@ -72,6 +75,8 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
       })
       .catch((err) => {
         stopTimeout();
+        setIsLoading(false);
+        onRequestFail(req,'Login Failed');
         console.log("makePostRequest_err: ", err);
       });
   };
@@ -90,6 +95,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
   } = vars;
 
     startTimeout();
+    setIsLoading(true);
     switch (req) {
       // case "get-player":
       //   const {playerId} = vars;
@@ -122,6 +128,13 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
             setCookie('userInfo', {roomId, userId}, { path: '/', maxAge });
         };
         break;
+        case "logout" :
+          removeCookie('loginToken', {path: '/'});
+          removeCookie('userInfo', {path: '/'});
+          setIsLoading(false);
+          window.location.reload();
+          return;
+          break;
       default:
     }
     if (req !== "" || typeof req !== "undefined") makePostRequest(req, api, dataparam, '', onSuccess);
@@ -129,6 +142,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
 
   return [
     cookies,
+    isLoading,
     makeRequest,
   ];
 }

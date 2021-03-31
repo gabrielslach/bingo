@@ -106,6 +106,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         const pickedCells_local = window.localStorage.getItem('pickedCells');
         if (pickedCells_local) {
           setPickedCells(JSON.parse(pickedCells_local));
+          setIsLoading(false);
           return;
         }
         api += "get-picked-cells";
@@ -118,6 +119,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         break;
       case "reset-picked-cells-cache":
         window.localStorage.removeItem('pickedCells');
+        setIsLoading(false);
         return;
         break;
       case "reset-picked-cells":

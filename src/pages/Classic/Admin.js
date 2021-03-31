@@ -80,7 +80,7 @@ function ClassicAdmin(props) {
     const classes = useStyles();
     const match = useRouteMatch();
 
-    const [cookies, setPlayerLogin] = usePlayerLogin();
+    const [cookies, isLoading3, setPlayerLogin] = usePlayerLogin();
     const  [cards = [], players = [], isLoading, setClassicGameAdmin] = useClassicGameAdmin();
     const [pickedCells, isLoading2, setPickedCells] = useGameDrawer();
     const [filteredList, setFilteredList] = useState([])
@@ -196,8 +196,12 @@ function ClassicAdmin(props) {
         setClassicGameAdmin('delete-player', {roomId, playerId});
     };
 
+    const handleLogout = () => {
+        setPlayerLogin('logout');
+    }
+
     useEffect(() => {
-      if (cookies.loginToken) {
+      if (cookies.loginToken && cookies.userInfo) {
         setClassicGameAdmin("get-player-all", { roomId });
       }
     }, [cookies]);
@@ -229,7 +233,7 @@ function ClassicAdmin(props) {
                             <TextField variant='outlined' label='Password' name='password' type='password' margin="dense" fullWidth/>
                         </Grid>
                         <Grid item md={2} sm={12}>
-                            <Button variant='contained' type='submit' fullWidth>Login</Button>
+                            <Button variant='contained' type='submit' fullWidth disabled={isLoading3}>Login</Button>
                         </Grid>
                     </Grid>
                     </form>
@@ -256,6 +260,9 @@ function ClassicAdmin(props) {
                 </Grid>
                 <Grid item>
                     <Button variant='contained' onClick={handleGoToGameDrawer} >Game Draw</Button>
+                </Grid>
+                <Grid item>
+                    <Button color='secondary' onClick={handleLogout} >Logout</Button>
                 </Grid>
             </React.Fragment>
             }
@@ -322,7 +329,7 @@ function ClassicAdmin(props) {
         playerId={selectedPlayerInfo.id}
         playerName={selectedPlayerInfo.name}
         />
-    <Backdrop className={classes.backdrop} open={isLoading}>
+    <Backdrop className={classes.backdrop} open={isLoading || isLoading2 || isLoading3}>
         <CircularProgress color="inherit" />
     </Backdrop>
     </Grid>

@@ -10,7 +10,11 @@ import usePlayerLogin from '../../util/usePlayerLogin';
 const useStyles = makeStyles((theme)=>({
     root: {
         padding: theme.spacing(1),
-        marginTop: theme.spacing(3)
+        marginTop: theme.spacing(3),
+        '& h3': {
+            fontFamily: "'Fredericka the Great', cursive",
+            textTransform: 'uppercase'
+        }
     },
     paperRoot: {
         padding: theme.spacing(2),
@@ -24,7 +28,7 @@ function DeckViewLogin(props) {
 
     const classes = useStyles();
 
-    const [cookies, setPlayerLogin] = usePlayerLogin();
+    const [cookies, isLoading, setPlayerLogin] = usePlayerLogin();
 
     const handleAdminLogin = e => {
         e.preventDefault();
@@ -62,14 +66,14 @@ function DeckViewLogin(props) {
                     <Grid item>
                         <form onSubmit={handleAdminLogin}>
                         <Grid container direction='row' spacing={1} justify='center' alignItems='center'>
-                            <Grid item md={6} sm={12}>
+                            <Grid item md={6} xs={12}>
                                 <TextField variant='outlined' label='Player ID' name='playerId' margin="dense" fullWidth/>
                             </Grid>
-                            <Grid item md={6} sm={12}>
+                            <Grid item md={6} xs={12}>
                                 <TextField variant='outlined' label='Password' name='password' type='password' margin="dense" fullWidth/>
                             </Grid>
-                            <Grid item md={12} sm={12}>
-                                <Button variant='contained' type='submit' fullWidth>Login</Button>
+                            <Grid item md={12} xs={12}>
+                                <Button variant='contained' type='submit' fullWidth disabled={isLoading}>Login</Button>
                             </Grid>
                         </Grid>
                         </form>

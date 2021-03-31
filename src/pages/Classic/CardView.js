@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme)=>({
     root: {
         fontSize: '2em',
         padding: theme.spacing(1),
+        paddingTop: theme.spacing(2),
+        color: 'white',
+        backgroundColor: '#1e7573',
         maxWidth: '9em',
         marginLeft: 'auto',
         marginRight: 'auto',
@@ -18,11 +21,16 @@ const useStyles = makeStyles((theme)=>({
             height: '1.75em'
         },
         '& table': {
+            backgroundColor: 'white',
+            color: 'black',
             marginLeft: 'auto',
             marginRight: 'auto'
         },
         '& td': {
             cursor: 'pointer'
+        },
+        '& h6': {
+            fontFamily: "'Montserrat', sans-serif !important"
         },
     },
     sub2: {

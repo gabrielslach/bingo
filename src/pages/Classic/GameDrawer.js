@@ -40,7 +40,8 @@ const useStyles = makeStyles(theme=> ({
     h1Typography: {
         fontSize: '15em',
         color: 'white',
-        textShadow: '4px 3px #d6a224'
+        textShadow: '4px 3px #d6a224',
+        fontFamily: "'Bangers', cursive"
     },
     h5Typography: {
         color: 'white',
