@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme)=>({
         marginTop: theme.spacing(2)
     },
     paperRoot: {
-        backgroundColor: 'rgba(0,0,0,0)',
+        //backgroundColor: 'rgba(0,0,0,0)',
+        backgroundColor: '#d6a224',
         padding: theme.spacing(2),
         borderColor: 'rgba(255,255,255,0.3)',
         '& h5': {
@@ -71,7 +72,7 @@ function PlayerDeckView(props) {
     }
     
     return(
-        <Paper variant="outlined" className={classes.paperRoot}>
+        <Paper className={classes.paperRoot}>
             <Grid container direction='row' justify='space-between' alignItems='center' >
                 <Grid item>
                     <Typography variant='h5'>{id} <b>{name}'s Deck</b></Typography>

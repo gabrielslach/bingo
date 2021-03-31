@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme)=>({
     root: {
         padding: theme.spacing(1),
+        paddingTop: theme.spacing(1)/2,
+        color: 'white',
+        backgroundColor: '#1e7573',
         cursor: 'pointer',
         '& table, th, td': {
             border: '1px solid black',
@@ -14,9 +17,16 @@ const useStyles = makeStyles((theme)=>({
             textAlign: 'center'
         },
         '&:hover': {
-            backgroundColor: 'white',
+            backgroundColor: '#1e7573',
             transform: 'scale(1.2)'
         },
+        '& h6': {
+            fontFamily: "'Montserrat', sans-serif !important"
+        },
+        '& table': {
+            backgroundColor: 'white',
+            color: 'black',
+        }
     },
     
 }))

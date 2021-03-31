@@ -1,6 +1,14 @@
 import React, {useEffect, useState, useRef} from 'react';
 
-import {Grid, Button, Typography, Paper, IconButton, Backdrop, CircularProgress} from '@material-ui/core';
+import {
+    Grid, 
+    Button,
+    Typography, 
+    Paper, 
+    IconButton, 
+    Backdrop, 
+    Tooltip
+} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 import {RotateLeft as RotateLeftIcon} from '@material-ui/icons';
 import Image from 'material-ui-image';
@@ -32,7 +40,7 @@ const useStyles = makeStyles(theme=> ({
     h1Typography: {
         fontSize: '15em',
         color: 'white',
-        textShadow: '2px 2px 4px #000000'
+        textShadow: '4px 3px #d6a224'
     },
     h5Typography: {
         color: 'white',
@@ -50,6 +58,9 @@ const useStyles = makeStyles(theme=> ({
     credits: {
         fontSize: '0.5em',
         color: 'rgba(255,255,255,0.2)'
+    },
+    ballTypo: {
+        fontFamily: "'Bangers', cursive"
     }
 }));
 
@@ -170,9 +181,11 @@ const GameDrawer = props => {
                     >
                     {pickedCells.length === 75 ? 'All numbers picked.' : 'Draw Number'}
                 </Button>
-                <IconButton aria-label="delete" className={classes.margin} onClick={handleReset}>
-                    <RotateLeftIcon fontSize="small" />
-                </IconButton>
+                <Tooltip title='Reset Draw' aria-label='reset draw'>
+                    <IconButton aria-label="delete" className={classes.margin} onClick={handleReset}>
+                        <RotateLeftIcon fontSize="small" />
+                    </IconButton>
+                </Tooltip>
             </Grid>
             <Grid item>
                 <Grid container direction='row' spacing={2} justify='flex-start'>
@@ -181,7 +194,7 @@ const GameDrawer = props => {
                         return (
                             <Grid item key={`${item}-ball-grid`}>
                                 <Paper elevation={3} className={classes.roundPaper}>
-                                    <Typography variant='h5' className={classes.centeredTypography}>{letter_} {item}</Typography>
+                                    <Typography variant='h5' className={`${classes.centeredTypography} ${classes.ballTypo}`}>{letter_} {item}</Typography>
                                 </Paper>
                             </Grid>
                         );
@@ -189,7 +202,7 @@ const GameDrawer = props => {
                 </Grid>
             </Grid>
             <ResetPickedCellsDialog open={resetDialog} setOpen={setResetDialog} onConfirm={handleConfirmReset}/>
-            <Backdrop className={classes.backdrop} open={isLoading}>
+            <Backdrop className={classes.backdrop} open={isWaiting || isLoading}>
                 <Grid container direction='column' alignItems='center'>
                     <Grid item>
                 <div className={classes.img}>

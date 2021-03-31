@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme)=>({
     },
     paperRoot: {
         padding: theme.spacing(2),
-        textAlign: 'center'
+        textAlign: 'center',
     },
     deckViewGrid: {
         minWidth: '66.7%'
@@ -42,6 +42,10 @@ const useStyles = makeStyles((theme)=>({
         zIndex: theme.zIndex.drawer + 1,
         color: '#fff',
     },
+    h3Typo: {
+        fontFamily: "'Fredericka the Great', cursive",
+        textTransform: 'uppercase'
+    }
 }));
 
 const CssTextField = withStyles({
@@ -215,7 +219,7 @@ function ClassicAdmin(props) {
     <Paper classes={{root: classes.paperRoot}}>
         <Grid container direction='column' justify='center' alignItems='center' spacing={2}>
             <Grid item>
-                <Typography variant='h3'>Room {roomId} Game Master</Typography>
+                <Typography variant='h3' className={classes.h3Typo}>Room {roomId} Game Master</Typography>
             </Grid>
             {!cookies.loginToken ? 
                 <Grid item>
