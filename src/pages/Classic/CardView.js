@@ -71,7 +71,7 @@ function Card(props) {
     }
 
     useEffect(()=>{
-        if (pickedCells.length > 0) {
+        if (pickedCells) {
             setSelected(pickedCells);
         };
     }, [pickedCells])

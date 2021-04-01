@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
     listStyle: 'none',
     padding: theme.spacing(0.5),
     margin: 0,
-    maxWidth: '700px'
+    maxWidth: '700px',
+    marginRight: theme.spacing(2)
   },
   chip: {
     margin: theme.spacing(0.5),
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgba(0,0,0,0.3)',
     textShadow: 'none',
     paddingTop: theme.spacing(0.5),
+    cursor: 'pointer'
   }
 }));
 
@@ -38,7 +40,7 @@ export default function ChipsArray(props) {
 
   return (
     <Paper component="ul" className={classes.root}>
-      {chipData.length < 1 && <Typography className={classes.placeholder}>Click <PlaylistAddIcon fontSize="small"/> to add a number.</Typography>}
+      {chipData.length < 1 && <Typography className={classes.placeholder} onClick={onAddChip} >Click <PlaylistAddIcon fontSize="small"/> to add a number.</Typography>}
       {chipData.map((data) => {
         return (
           <li key={`${data}-chip`}>

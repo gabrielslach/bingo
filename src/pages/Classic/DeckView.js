@@ -7,6 +7,7 @@ import {
   
 import {Grid, Typography, Button} from '@material-ui/core/';
 import { makeStyles } from '@material-ui/core/styles';
+import {ZoomIn as ZoomInIcon, ZoomOut as ZoomOutIcon} from '@material-ui/icons';
 
 import CardView from './CardView'
 import SelectCellDialog from './DeckView/SelectCellDialog';
@@ -26,10 +27,31 @@ const useStyles = makeStyles(theme => ({
     },
     clickableTypo: {
         textDecoration: 'underline',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        width: 'fit-content'
     },
     thinTypo: {
         textShadow: '0.05em 0.05em #d6a224',
+    },
+    scaleDownDiv: {
+        transform: 'scale(0.6)',
+        transformOrigin: '1vw 0',
+        width: 'fit-content',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    gridItemScaleDown: {
+        height:'16em',
+    },
+    scaleDownDiv2: {
+        transform: 'scale(0.3)',
+        transformOrigin: '1vw 0',
+        width: 'fit-content',
+        marginLeft: 'auto',
+        marginRight: 'auto'
+    },
+    gridItemScaleDown2: {
+        height:'8em',
     }
 }));
 
@@ -46,6 +68,7 @@ function DeckView(props) {
 
     const [selectCellDialog, setSelectCellDialog] = useState(false);
     const [selectedChips, setSelectedChips] = useState([]);
+    const [zoom, setZoom] = useState('in');
 
     const handleLogout = () => {
         setPlayerLogin('logout');
@@ -70,6 +93,12 @@ function DeckView(props) {
         );
     };
 
+    const handleZoom = () => {
+        setZoom(
+            (zoom) => zoom === 'in'? 'out': 'in'
+        )
+    }
+
     useEffect(()=> {
         if (cookies.loginToken) {
             setClassicGameAdmin('get-player', {playerId, roomId});
@@ -90,12 +119,27 @@ function DeckView(props) {
                 <Typography variant='subtitle1' className={classes.thinTypo}>Selected Cells:</Typography>
                 <SelectCellChipArray chipData={selectedChips} setChipData={setSelectedChips} onAddChip={handleAddChip} />
                 <br/>
+                <Button size='small' variant='contained' onClick={handleZoom} startIcon={zoom === 'in'? <ZoomOutIcon/> : <ZoomInIcon/>}>{zoom === 'in'? 'Zoom Out' : 'Zoom In'}</Button>
+                <br/>
             </Grid>
-            {cards.map(item => (
-                <Grid item key={`${playerId}-card-${item.id}`} lg={3} md={4} sm={6} xs={12}>
-                    <CardView items={item.cells} cardId={`${roomId}-${item.id}`} pickedCells={selectedChips} />
+            <Grid item xs={12}>
+                <Grid container direction='row' justify='flext-start' spacing={1}>
+                {cards.map(item => (
+                    <Grid item 
+                        xs={zoom === 'in' ? 6 : 3} 
+                        sm={zoom === 'in' ? 4 : 2} 
+                        md={zoom === 'in' ? 3 : 2} 
+                        lg={zoom === 'in' ? 2 : 1} 
+                        xl={1}
+                        key={`${playerId}-card-${item.id}`} 
+                        className={zoom === 'in' ? classes.gridItemScaleDown : classes.gridItemScaleDown2}>
+                        <div className={zoom === 'in' ? classes.scaleDownDiv : classes.scaleDownDiv2}>
+                            <CardView items={item.cells} cardId={`${roomId}-${item.id}`} pickedCells={selectedChips} />
+                        </div>
+                    </Grid>
+                ))}
                 </Grid>
-            ))}
+            </Grid>
         </Grid>
         <SelectCellDialog 
             open={selectCellDialog}
