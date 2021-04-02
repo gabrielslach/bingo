@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
         background: 'linear-gradient(90deg, white 60%, #18191F 40%)',
         position:'relative',
         minWidth: '1095px',
-        minHeight: '500px'
+        minHeight: '500px',
+        overflow:'hidden'
     },
     appbarRoot: {
         flexGrow: 1
