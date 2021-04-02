@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme)=>({
         '& table, th, td': {
             border: '1px solid black',
             borderCollapse: 'collapse',
-            padding: '0 0.25em',
+            padding: '0.1em 0.25em',
             textAlign: 'center'
         },
         '&:hover': {
