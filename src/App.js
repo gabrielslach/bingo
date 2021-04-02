@@ -21,6 +21,7 @@ import ClassicAdmin from './pages/Classic/Admin'
 import ClassicDeckView from './pages/Classic/DeckView'
 import ClassicDeckViewLogin from './pages/Classic/DeckViewLogin'
 import ClassicGameDrawer from './pages/Classic/GameDrawer'
+import LandingPage from './pages/LandingPage';
 
 function Home() {
   const [roomID, setRoomID] = useState(null) //create custom hook once grew
@@ -96,8 +97,7 @@ function App() {
             <Redirect to={{pathname:'/classic/UPSCA/admin'}}/>
           </Route>
           <Route path="/">
-            <Redirect to={{pathname:'/classic/UPSCA'}}/>
-            {/* <Home/> */}
+            <LandingPage/>
           </Route>
         </Switch>
       </Router>
