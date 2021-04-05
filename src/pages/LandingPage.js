@@ -242,8 +242,8 @@ const LandingPage = props => {
                         </Grid>
                     </Grid>
                     <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.secondaryBtn}`} href='/classic/UPSCA'>Login</Button>
-                    <Tooltip title='Coming soon'>
-                        <Button variant='contained' className={`${classes.btn} ${classes.rightBtn} ${classes.primaryBtn}`}>Create Room</Button>
+                    <Tooltip title='Create a Room'>
+                        <Button variant='contained' className={`${classes.btn} ${classes.rightBtn} ${classes.primaryBtn}`} href='#getting-started'>Create Room</Button>
                     </Tooltip>
                 </Toolbar>
             </AppBar>

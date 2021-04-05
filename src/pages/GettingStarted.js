@@ -7,6 +7,8 @@ const useStyles = makeStyles(theme=> ({
     root: {
         width: '100%',
         height: '100vh',
+        minWidth: '1095px',
+        minHeight: '500px',
         backgroundColor: '#8C30F5',
         position: 'relative',
         overflow: 'hidden',
@@ -50,13 +52,15 @@ const useStyles = makeStyles(theme=> ({
     main: {
         position: 'absolute',
         top: '50%',
-        left: '50%',
+        left: '45%',
         transform: 'translate(-50%, -50%)',
         width: 'fit-content',
         zIndex: 1
     },
     picture: {
-        width: '300px'
+        width: '500px',
+        height: '500px',
+        transform: 'translateY(40px)'
     },
     textArea: {
         '& h3': {
@@ -90,7 +94,7 @@ function GettingStarted(props) {
         <div className={classes.root} id='getting-started'>
             <Grid container direction='row' spacing={3} alignItems='center' className={classes.main}>
                 <Grid item className={classes.pictureDiv}>
-                    <img className={classes.picture} alt='getting-started' src='https://www.clipartkey.com/mpngs/m/37-374296_transparent-deck-of-card-clipart-playing-cards-svg.png'/>
+                    <img className={classes.picture} alt='getting-started' src='roleta.png'/>
                 </Grid>
                 <Grid item className={classes.textArea}>
                     <Typography variant='h3'>
