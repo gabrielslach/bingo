@@ -43,7 +43,8 @@ const useStyles = makeStyles((theme)=>({
         color: '#fff',
     },
     h3Typo: {
-        fontFamily: "'Fredericka the Great', cursive",
+        fontFamily:"'Manrope', sans-serif",
+        fontWeight: 'bold',
         textTransform: 'uppercase'
     }
 }));

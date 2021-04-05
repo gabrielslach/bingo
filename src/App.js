@@ -1,6 +1,6 @@
 import './App.css';
 
-import React, {useState} from 'react'
+import React, {useState} from 'react';
 
 import {
   BrowserRouter as Router,
@@ -14,14 +14,15 @@ import {
 
 import { CookiesProvider } from 'react-cookie';
 
-import Dashboard from './pages/Dashboard'
-import CreateRoom from './pages/CreateRoom'
-import Lobby from './pages/Lobby'
-import ClassicAdmin from './pages/Classic/Admin'
-import ClassicDeckView from './pages/Classic/DeckView'
-import ClassicDeckViewLogin from './pages/Classic/DeckViewLogin'
-import ClassicGameDrawer from './pages/Classic/GameDrawer'
+import Dashboard from './pages/Dashboard';
+import CreateRoom from './pages/CreateRoom';
+import Lobby from './pages/Lobby';
+import ClassicAdmin from './pages/Classic/Admin';
+import ClassicDeckView from './pages/Classic/DeckView';
+import ClassicDeckViewLogin from './pages/Classic/DeckViewLogin';
+import ClassicGameDrawer from './pages/Classic/GameDrawer';
 import LandingPage from './pages/LandingPage';
+import GettingStarted from './pages/GettingStarted';
 
 function Home() {
   const [roomID, setRoomID] = useState(null) //create custom hook once grew
@@ -98,6 +99,7 @@ function App() {
           </Route>
           <Route path="/">
             <LandingPage/>
+            <GettingStarted/>
           </Route>
         </Switch>
       </Router>

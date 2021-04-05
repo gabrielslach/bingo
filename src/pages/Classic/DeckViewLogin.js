@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme)=>({
         padding: theme.spacing(1),
         marginTop: theme.spacing(3),
         '& h3': {
-            fontFamily: "'Fredericka the Great', cursive",
+            fontFamily:"'Manrope', sans-serif",
+            fontWeight: 'bold',
             textTransform: 'uppercase'
         }
     },

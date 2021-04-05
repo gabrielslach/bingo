@@ -230,11 +230,11 @@ const LandingPage = props => {
                         <Grid item>
                             <Button color="inherit" className={classes.btn} href='/classic/UPSCA'>UPSCA Bingo</Button>
                         </Grid>
-                        <Grid item>
+                        {/* <Grid item>
                             <Tooltip title="I'm accepting commissions" aria-label="Hire Me">
                                 <Button color="inherit" className={classes.btn} href='https://www.linkedin.com/in/gabdl-dev-mete/' target='_blank'>Hire Me</Button>
                             </Tooltip>
-                        </Grid>
+                        </Grid> */}
                         <Grid item>
                             <Tooltip title="Support this project" aria-label="Buy Me A Coffee">
                                 <Button color="inherit" className={classes.btn} href="https://ko-fi.com/gabrielslach" target="_blank">Buy Me A Coffee</Button>
@@ -253,8 +253,8 @@ const LandingPage = props => {
                     Playing BINGO in online meetings have never been much easier. <br/>
                     Welcome to BINGO! Web, create a room now to start playing!
                 </Typography>
-                <Tooltip title='Coming soon'>
-                    <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.primaryBtn}`}>Get Started</Button>
+                <Tooltip title='Create a Room'>
+                    <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.primaryBtn}`} href='#getting-started'>Get Started</Button>
                 </Tooltip>
                 <Button variant='outlined' className={`${classes.btn} ${classes.outlinedBtn}`} href='/classic/UPSCA'>UPSCA Bingo</Button>
             </div>
