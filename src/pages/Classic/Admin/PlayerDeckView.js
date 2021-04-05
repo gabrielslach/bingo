@@ -113,7 +113,7 @@ function PlayerDeckView(props) {
                     <Grid container direction='row' justify='space-between' >
                         <Grid item>
                             <Typography variant='subtitle2'>
-                                Email: <b>{email.length ? email : '-'}</b> &nbsp;&nbsp;&nbsp; Code: <b>{code}</b>
+                                Email: <b>{email.length ? email : '-'}</b> &nbsp;&nbsp;&nbsp; Password: <b>{code}</b>
                             </Typography>
                         </Grid>
                         <Grid item>
