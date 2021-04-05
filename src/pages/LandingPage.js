@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 
-import {AppBar, Toolbar, Typography, Button, Grid, Tooltip} from '@material-ui/core';
+import {AppBar, Toolbar, Typography, Button, Grid, Tooltip, TextField} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
+
+import DialogScaffold from './Classic/CommonComponents/DialogScaffold';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -217,6 +219,22 @@ const useStyles = makeStyles(theme => ({
 
 const LandingPage = props => {
     const classes = useStyles();
+
+    const [openDialog, setOpenDialog] = useState(false);
+    const [roomId, setRoomID] = useState('');
+
+    const handleGoToRoomConfirm = () => {
+        window.location.assign(`/classic/${roomId}`);
+    };
+
+    const handleGoToRoomCancel = () => {
+        setRoomID('');
+    };
+
+    const handleChangeRoomId = e => {
+        setRoomID(e.target.value);
+    }
+
     return(
         <div className={classes.root}>
             <AppBar position="static" elevation={0} color='transparent' className={classes.appbarRoot}>
@@ -241,7 +259,7 @@ const LandingPage = props => {
                             </Tooltip>
                         </Grid>
                     </Grid>
-                    <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.secondaryBtn}`} href='/classic/UPSCA'>Login</Button>
+                    <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.secondaryBtn}`} onClick={setOpenDialog}>Login</Button>
                     <Tooltip title='Create a Room'>
                         <Button variant='contained' className={`${classes.btn} ${classes.rightBtn} ${classes.primaryBtn}`} href='#getting-started'>Create Room</Button>
                     </Tooltip>
@@ -272,6 +290,18 @@ const LandingPage = props => {
                     <Typography>G48</Typography>
                 </div>
             </div>
+            <DialogScaffold 
+                open={openDialog}
+                setOpen={setOpenDialog}
+                title='BINGO Room'
+                contentText='What is your Room ID?'
+                FieldsGrid={<TextField fullWidth label='Room ID' placeholder='e.g. "UPSCA"' value={roomId} onChange={handleChangeRoomId} />}
+                confirmText='Confirm'
+                onConfirm={handleGoToRoomConfirm}
+                onCancel={handleGoToRoomCancel}
+                fullWidth={true}
+                maxWidth='xs'
+                />
         </div>
     );
 };

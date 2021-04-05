@@ -46,7 +46,6 @@ export default function useGameDrawer(vars) { // You could use this var to set s
         console.log(req, ': ', oMessage);
     };
     
-    setIsLoading(false);
     displayToast(
         oMessage,
         oFlag ? toast.TYPE.SUCCESS : toast.TYPE.ERROR,
@@ -79,6 +78,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
     postRequest(api, dataparam, loginToken)
       .then((res) => {
         stopTimeout();
+        setIsLoading(false);
         if (res.status !== 200 && res.status !== 201) {
           onRequestFail(req, res.status);
         } else {
@@ -87,6 +87,7 @@ export default function useGameDrawer(vars) { // You could use this var to set s
       })
       .catch((err) => {
         stopTimeout();
+        setIsLoading(false);
         onRequestFail(req, (err && err.response) ? err.response.status: '');
         console.log("makePostRequest_err: ", err);
       });

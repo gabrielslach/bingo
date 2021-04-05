@@ -15,7 +15,9 @@ export default function DialogScaffold(props) {
       FieldsGrid=<div/>,
       confirmText='Confirm',
       onConfirm,
-      onCancel=()=>{}
+      onCancel=()=>{},
+      maxWidth=null,
+      fullWidth=false
     } = props;
 
   const handleClose = () => {
@@ -28,7 +30,7 @@ export default function DialogScaffold(props) {
   };
 
   return (
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" fullWidth={fullWidth} maxWidth={maxWidth}>
         <DialogTitle id="form-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText>

@@ -54,6 +54,9 @@ function DeckViewLogin(props) {
             const rootPath = match.path.split('/:roomId/')[0]
             window.location.assign(`${rootPath}/UPSCA`)
         }
+        if (match.url[match.url.length - 1] === '/') {
+            window.location.assign(match.url.substring(0,match.url.length - 1))
+        }
     }, []);
 
     return (
@@ -75,6 +78,11 @@ function DeckViewLogin(props) {
                             </Grid>
                             <Grid item md={12} xs={12}>
                                 <Button variant='contained' type='submit' fullWidth disabled={isLoading}>Login</Button>
+                            </Grid>
+                            <Grid item md={12} xs={12}></Grid>
+                            <Grid item md={10} xs={10}><Typography variant='subtitle2'>For Room Admin:</Typography></Grid>
+                            <Grid item md={4} xs={12}>
+                                <Button variant='outlined' type='submit' fullWidth href={`${match.url}/admin`} size='small'>Go to Admin Login</Button>
                             </Grid>
                         </Grid>
                         </form>

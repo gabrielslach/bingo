@@ -73,9 +73,9 @@ function ClassicBingo() {
       <Route path={`${match.path}/:roomId`}>
         <GameRoom/>
       </Route>
-      <Route path={`${match.path}/`}>
-        <Lobby/>
-      </Route>
+          <Route path='/'>
+            <Redirect to={{pathname:'/'}}/>
+          </Route>
     </Switch>
   )
 }

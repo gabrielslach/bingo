@@ -245,13 +245,13 @@ function ClassicAdmin(props) {
                     <form onSubmit={handleCreatePlayer}>
                     <Grid container direction='row' spacing={1} justify='center' alignItems='center'>
                         <Grid item md={3} sm={12}>
-                            <TextField variant='outlined' label='Name' name='name' margin="dense" fullWidth/>
+                            <TextField variant='outlined' label='Name' name='name' margin="dense" fullWidth required/>
                         </Grid>
                         <Grid item md={4} sm={12}>
                             <TextField variant='outlined' label='Email' name='email' margin="dense" fullWidth/>
                         </Grid>
                         <Grid item md={3} sm={12}>
-                            <TextField variant='outlined' label='No of Cards' name='noOfCards' margin="dense" fullWidth/>
+                            <TextField variant='outlined' label='No of Cards' name='noOfCards' margin="dense" fullWidth required/>
                         </Grid>
                         <Grid item md={2} sm={12}>
                             <Button variant='contained' type='submit' fullWidth>Create Player</Button>
