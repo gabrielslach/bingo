@@ -84,7 +84,7 @@ function DeckView(props) {
                 const currentState_ = [...currentState];
                 numArr.forEach(item=>{
                     const parsedItem = parseInt(item);
-                    if (!currentState.includes(parsedItem)) {
+                    if (!currentState.includes(parsedItem) && !isNaN(parsedItem)) {
                         currentState_.push(parsedItem);
                     };
                 });

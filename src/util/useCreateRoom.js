@@ -89,7 +89,6 @@ export default function useCreateRoom(vars) { // You could use this var to set s
     var api = "";
     var dataparam = {};
     let onSuccess = () => {};
-    const { roomId } = vars;
     setIsLoading(true);
     startTimeout();
     switch (req) {

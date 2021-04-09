@@ -8,7 +8,7 @@ const useStyles = makeStyles(theme=> ({
 
 }));
 
-const DeletePlayerDialog = (props) => {
+const SelectCellDialog = (props) => {
     const {open, setOpen, onConfirm} = props;
     const classes = useStyles();
 
@@ -48,5 +48,5 @@ const DeletePlayerDialog = (props) => {
     );
 };
 
-export default DeletePlayerDialog;
+export default SelectCellDialog;
 

@@ -11,9 +11,8 @@ const useStyles = makeStyles(theme => ({
         height: '100%',
         background: 'linear-gradient(90deg, white 60%, #18191F 40%)',
         position:'relative',
-        minWidth: '1095px',
-        minHeight: '500px',
-        overflow:'hidden'
+        overflow:'hidden',
+        minWidth: '1095px'
     },
     appbarRoot: {
         flexGrow: 1
@@ -27,8 +26,10 @@ const useStyles = makeStyles(theme => ({
         cursor: 'pointer'
     },
     leftSection: {
-        flexGrow: 1,
         width: 'fit-content'
+    },
+    padding: {
+        flexGrow: 1
     },
     primaryBtn: {
         backgroundColor: '#8C30F5',
@@ -214,6 +215,46 @@ const useStyles = makeStyles(theme => ({
             lineHeight: '152px',
             fontSize: '6em'
         }
+    },
+    '@media screen and (max-width: 450px)': {
+        root: {
+            background: 'white',
+            height: '140vh',
+            minWidth: 0,
+        },
+        toolbarRoot: {
+            display: 'block',
+            textAlign: 'center'
+        },
+        appbarRoot: {
+            backgroundColor: '#18191F',
+            paddingBottom: theme.spacing(4),
+            paddingTop: theme.spacing(3),
+            color: 'white',
+        },
+        leftSection: {
+            justifyContent: 'center'
+        },
+        btnHeader: {
+            display: 'block',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            marginTop: theme.spacing(2),
+            width: '100%'
+        },
+        circles: {
+            left: '-20%',
+            top: '30%',
+            zIndex: 0,
+            opacity: '60%'
+        },
+        mainTitle: {
+            zIndex: 1,
+            left: 0,
+            textAlign: 'center',
+            paddingLeft: theme.spacing(1),
+            paddingRight: theme.spacing(1),
+        }
     }
 }));
 
@@ -238,14 +279,14 @@ const LandingPage = props => {
     return(
         <div className={classes.root}>
             <AppBar position="static" elevation={0} color='transparent' className={classes.appbarRoot}>
-                <Toolbar>
+                <Toolbar classes={{root: classes.toolbarRoot}}>
                     <Grid container direction='row' alignItems='center' className={classes.leftSection}>
-                        <Grid item>
+                        <Grid item xs={12} sm>
                             <Typography variant="h6" className={classes.title} onClick={()=>{window.open('http://gabrielslach.me')}}>
                             GABRIELSLACH.ME
                             </Typography>
                         </Grid>
-                        <Grid item>
+                        <Grid item xs={12} sm>
                             <Button color="inherit" className={classes.btn} href='/classic/UPSCA'>UPSCA Bingo</Button>
                         </Grid>
                         {/* <Grid item>
@@ -253,15 +294,16 @@ const LandingPage = props => {
                                 <Button color="inherit" className={classes.btn} href='https://www.linkedin.com/in/gabdl-dev-mete/' target='_blank'>Hire Me</Button>
                             </Tooltip>
                         </Grid> */}
-                        <Grid item>
+                        <Grid item >
                             <Tooltip title="Support this project" aria-label="Buy Me A Coffee">
                                 <Button color="inherit" className={classes.btn} href="https://ko-fi.com/gabrielslach" target="_blank">Buy Me A Coffee</Button>
                             </Tooltip>
                         </Grid>
                     </Grid>
-                    <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.secondaryBtn}`} onClick={setOpenDialog}>Login</Button>
+                    <div className={classes.padding}/>
+                    <Button variant='contained' className={`${classes.btn} ${classes.btnHeader} ${classes.leftBtn} ${classes.secondaryBtn}`} onClick={setOpenDialog}>Login</Button>
                     <Tooltip title='Create a Room'>
-                        <Button variant='contained' className={`${classes.btn} ${classes.rightBtn} ${classes.primaryBtn}`} href='#getting-started'>Create Room</Button>
+                        <Button variant='contained' className={`${classes.btn} ${classes.btnHeader} ${classes.rightBtn} ${classes.primaryBtn}`} href='#getting-started'>Create Room</Button>
                     </Tooltip>
                 </Toolbar>
             </AppBar>

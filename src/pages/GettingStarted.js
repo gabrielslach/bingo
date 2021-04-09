@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme=> ({
     root: {
         width: '100%',
         height: '100vh',
-        minWidth: '1095px',
         minHeight: '500px',
+        minWidth: '1095px',
         backgroundColor: '#8C30F5',
         position: 'relative',
         overflow: 'hidden',
@@ -96,6 +96,41 @@ const useStyles = makeStyles(theme=> ({
     },
     backdrop: {
         zIndex: 10
+    },
+
+    '@media screen and (max-width: 450px)': {
+        root: {
+            height: '120vh',
+            minWidth: 0,
+            '& svg': {
+                width:'auto',
+                height: '80%',
+                transform: 'scale(2.5)'
+            }
+        },
+        main: {
+            position: 'relative',
+            width: '100%',
+            top:'auto',
+            left: 'auto',
+            transform: 'none',
+            '& img': {
+                transform: 'scale(-10%)'
+            }
+        },
+        textArea: {
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
+            transform: 'translateX(2.5%)',
+            '& button': {
+                marginBottom: theme.spacing(2)
+            }
+        },
+        picture: {
+            height: '300px',
+            width: 'auto'
+        },
     }
 }));
 
@@ -106,7 +141,14 @@ function GettingStarted(props) {
     const [roomDetails, isLoading, setCreateRoom] = useCreateRoom();
 
     const handleCreateRoom = async () => {
-        const captchaToken = await recaptchaRef.current.executeAsync();
+        let captchaToken = null;
+        try {
+            captchaToken = await recaptchaRef.current.executeAsync();
+        } catch (error) {
+            alert('Recaptcha verification failed.');
+            return;
+        }
+
         if (captchaToken) {
             setCreateRoom('create-room', {captchaToken});
         };
@@ -114,7 +156,7 @@ function GettingStarted(props) {
 
     return(
         <div className={classes.root} id='getting-started'>
-            <Grid container direction='row' spacing={3} alignItems='center' className={classes.main}>
+            <Grid container direction='row' spacing={3} alignItems='center' justify='center' className={classes.main}>
                 <Grid item className={classes.pictureDiv}>
                     <img className={classes.picture} alt='getting-started' src='roleta.png'/>
                 </Grid>
