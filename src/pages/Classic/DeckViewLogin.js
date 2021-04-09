@@ -33,9 +33,8 @@ function DeckViewLogin(props) {
 
     const handleAdminLogin = e => {
         e.preventDefault();
-        const password = e.target.password.value;
         const playerId = e.target.playerId.value;
-        setPlayerLogin('player-login', {roomId, playerId, password});
+        setPlayerLogin('player-login', {roomId, playerId});
     }
 
     useEffect(() => {
@@ -73,10 +72,7 @@ function DeckViewLogin(props) {
                             <Grid item md={6} xs={12}>
                                 <TextField variant='outlined' label='Player ID' name='playerId' margin="dense" fullWidth/>
                             </Grid>
-                            <Grid item md={6} xs={12}>
-                                <TextField variant='outlined' label='Password' name='password' type='password' margin="dense" fullWidth/>
-                            </Grid>
-                            <Grid item md={12} xs={12}>
+                            <Grid item md={3} xs={12}>
                                 <Button variant='contained' type='submit' fullWidth disabled={isLoading}>Login</Button>
                             </Grid>
                             <Grid item md={12} xs={12}></Grid>

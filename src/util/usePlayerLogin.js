@@ -119,7 +119,7 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
         break;
     case "player-login" :
         api = "player-login";
-        dataparam = {roomId, userId : playerId, playerCode: password};
+        dataparam = {roomId, userId : playerId};
         onSuccess = (data) => {
             const {loginToken, roomId, userId} = data;
             const maxAge = 7 * 24 * 60 * 60;
