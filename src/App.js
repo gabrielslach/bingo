@@ -53,17 +53,21 @@ function GameRoom() {
   const {roomId} = useParams();
   const match = useRouteMatch();
   return (
-  <Switch>
-    <Route path={`${match.path}/admin`}>
-      <AdminRouter roomId={roomId}/>
-    </Route>
-    <Route path={`${match.path}/:playerId`}>
-      <ClassicDeckView roomId={roomId} />
-    </Route>
-    <Route path={`${match.path}/`}>
-      <ClassicDeckViewLogin roomId={roomId} />
-    </Route>
-  </Switch>);
+    <React.Fragment>
+      <a href='/' style={{textDecoration: 'none', color: 'rgba(255,255,255,0.3)', padding: '5px', float:'right',}}>BACK TO MAIN</a>
+      <Switch>
+        <Route path={`${match.path}/admin`}>
+          <AdminRouter roomId={roomId}/>
+        </Route>
+        <Route path={`${match.path}/:playerId`}>
+          <ClassicDeckView roomId={roomId} />
+        </Route>
+        <Route path={`${match.path}/`}>
+          <ClassicDeckViewLogin roomId={roomId} />
+        </Route>
+      </Switch>
+    </React.Fragment>
+  );
 }
 
 function ClassicBingo() {
