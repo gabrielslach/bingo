@@ -59,7 +59,8 @@ function PlayerDeckView(props) {
         showPasswordProp = false,
         onDeleteCard,
         onDeletePlayer,
-        onAddCard
+        onAddCard,
+        roomId=''
     } = props;
     const classes = useStyles();
 
@@ -127,7 +128,7 @@ function PlayerDeckView(props) {
             <Grid container direction='row' spacing={1} className={classes.gridRoot}>
                 {items.map((item,index)=>
                     <Grid item key={`cards-${index}`}>
-                        <Card items={item.cells} onSelectCard={()=>onSelectCard(item)} cardId={item.id} />
+                        <Card items={item.cells} onSelectCard={()=>onSelectCard(item)} cardId={`${roomId}-${item.id}`} />
                     </Grid>
                 )}
             </Grid>

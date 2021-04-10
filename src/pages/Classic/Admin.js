@@ -297,12 +297,13 @@ function ClassicAdmin(props) {
                 onDeleteCard={handleToggleConfirmDlg('deleteCard')}
                 onDeletePlayer={handleToggleConfirmDlg('deletePlayer')}
                 onAddCard={handleToggleConfirmDlg('addCard')}
+                roomId={roomId}
                 />
         </Grid>
     ))}
     <Dialog open={openCardDialog} onClose={handleCloseCardDialog}>
         <DialogContent>
-            <CardView items={selectedCard.cells} cardId={selectedCard.id} pickedCells={pickedCells} />
+            <CardView items={selectedCard.cells} cardId={`${roomId}-${selectedCard.id}`} pickedCells={pickedCells} />
         </DialogContent>
         <DialogActions>
             <Button onClick={handleCloseCardDialog}>Close</Button>

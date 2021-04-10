@@ -40,7 +40,8 @@ const DeleteCardDialog = (props) => {
 
     const handleConfirm = () => {
         if (confirmFinal) {
-            onConfirm(playerId, cardId);
+            const cardId_ = cardId.split('-');
+            onConfirm(playerId, cardId_[cardId_.length-1]);
             setOpen();
             setCardId('');
             setConfirmFinal(false);
