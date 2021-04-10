@@ -8,7 +8,7 @@ import DialogScaffold from './Classic/CommonComponents/DialogScaffold';
 const useStyles = makeStyles(theme => ({
     root: {
         backgroundColor: 'white',
-        height: '100%',
+        height: '100vh',
         background: 'linear-gradient(90deg, white 60%, #18191F 40%)',
         position:'relative',
         overflow:'hidden',
@@ -264,7 +264,14 @@ const LandingPage = props => {
     const [openDialog, setOpenDialog] = useState(false);
     const [roomId, setRoomID] = useState('');
 
-    const handleGoToRoomConfirm = () => {
+    const handleGoToRoomConfirm = (e) => {
+        if (e.target.roomId) {
+            e.preventDefault();
+            const e_roomId = e.target.roomId.value;
+            window.location.assign(`/classic/${e_roomId}`);
+            return;
+        };
+
         window.location.assign(`/classic/${roomId}`);
     };
 
@@ -337,7 +344,7 @@ const LandingPage = props => {
                 setOpen={setOpenDialog}
                 title='BINGO Room'
                 contentText='What is your Room ID?'
-                FieldsGrid={<TextField fullWidth label='Room ID' placeholder='e.g. "UPSCA"' value={roomId} onChange={handleChangeRoomId} />}
+                FieldsGrid={<form onSubmit = {handleGoToRoomConfirm}><TextField autoFocus fullWidth name='roomId' label='Room ID' placeholder='e.g. "UPSCA"' value={roomId} onChange={handleChangeRoomId} /></form>}
                 confirmText='Confirm'
                 onConfirm={handleGoToRoomConfirm}
                 onCancel={handleGoToRoomCancel}

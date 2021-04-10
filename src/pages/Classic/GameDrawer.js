@@ -208,7 +208,7 @@ const GameDrawer = props => {
                     <Grid item>
                 <div className={classes.img}>
                     <Image
-                        src='/raffle-loading.gif'
+                        src={roomId === 'UPSCA'? '/raffle-loading.gif': '/raffle-loading-generic.gif'}
                         style={{
                             opacity: 1
                         }}

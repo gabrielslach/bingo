@@ -98,7 +98,7 @@ export default function useCreateRoom(vars) { // You could use this var to set s
         dataparam = {captchaToken}; // This are the parameters or arguments supplied on the post request.
         onSuccess = (data) => { // This is a callback that executes at post request success. i.e. data is the res.data returned by the server
           const {roomId, password} = data;  
-          setRoomDetails(`Room ID: ${roomId}\nPassword: ${password}\nRoom URL: bingo.gabrielslach.me/classic/${roomId}`);
+          setRoomDetails(`Room ID: ${roomId}\nAdmin Password: ${password}\nRoom URL: bingo.gabrielslach.me/classic/${roomId}`);
         }
         break;
       default:
