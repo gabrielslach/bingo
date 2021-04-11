@@ -114,7 +114,6 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
             
             setCookie('loginToken', loginToken, { path: '/', maxAge });
             setCookie('userInfo', {roomId, userId: 'admin'}, { path: '/', maxAge });
-            window.location.reload();
         };
         break;
     case "player-login" :
@@ -132,7 +131,6 @@ export default function useClassicGameAdmin(vars) { // You could use this var to
           removeCookie('loginToken', {path: '/'});
           removeCookie('userInfo', {path: '/'});
           setIsLoading(false);
-          window.location.reload();
           return;
           break;
       default:

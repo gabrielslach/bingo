@@ -199,6 +199,7 @@ function ClassicAdmin(props) {
 
     const handleLogout = () => {
         setPlayerLogin('logout');
+        window.location.reload();
     }
 
     useEffect(() => {

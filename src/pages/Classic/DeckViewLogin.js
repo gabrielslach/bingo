@@ -39,10 +39,17 @@ function DeckViewLogin(props) {
 
     useEffect(() => {
       if (cookies.loginToken && cookies.userInfo) {
-          const {roomId, userId} = cookies.userInfo;
-          if (match.path) {
+          const cui = cookies.userInfo;
+          if (cui.roomId === undefined) {
+              return;
+          }
+          if (cui.roomId !== roomId) {
+              alert(`You are logged out from room ${cui.roomId} since you entered a different room.`)
+              setPlayerLogin('logout');
+              return;
+          } else if (match.path) {
           const rootPath = match.path.split('/:roomId/')[0];
-          window.location.assign(`${rootPath}/${roomId}/${userId}`);
+          window.location.assign(`${rootPath}/${roomId}/${cui.userId}`);
         };
       }
     }, [cookies]);
