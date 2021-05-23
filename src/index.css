@@ -5,11 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-#root {
-  height: 100vh;
-  background-color: dimgray;
+  /* background-color: dimgray; */
+  /* background-color: #681a30; */
+  background: repeating-linear-gradient(
+  45deg,
+  #681a30,
+  #681a30 30px,
+  #5c1529 30px,
+  #5c1529 60px
+);
 }
 
 code {

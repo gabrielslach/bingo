@@ -3,8 +3,6 @@ import React, {useState, useEffect} from 'react'
 import {Grid, TextField, Button} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles'
 
-import {writeData} from '../firebaseFunctions';
-
 import ListBox from './Dashboard/ListBox'
 import Cards from './Dashboard/Cards'
 import CardView from './Dashboard/CardView'
@@ -116,7 +114,7 @@ function Dashboard(props) {
     }, [cardOwners])
 
     useEffect(()=>{
-        writeData(roomID,'gameData', {names, pickedNames})
+        //writeData(roomID,'gameData', {names, pickedNames})
     }, [names, pickedNames])
 
     useEffect(()=>{
