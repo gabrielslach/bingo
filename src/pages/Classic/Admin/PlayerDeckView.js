@@ -48,6 +48,10 @@ const useStyles = makeStyles((theme)=>({
     },
     btn: {
         marginTop: theme.spacing(1)
+    },
+    noteTxt: {
+        color: 'white',
+        fontSize: '0.6em'
     }
 }))
 
@@ -109,6 +113,7 @@ function PlayerDeckView(props) {
                     </Button>
                 </Grid>
             </Grid>
+            <Typography variant='subtitle2' className={classes.noteTxt}>The player ID is {id}, give this to the player together with the Room ID.</Typography>
             {(showPasswordProp || showPlayerInfo) ?
                 <Paper className={classes.infoPaper}>
                     <Grid container direction='row' justify='space-between' >

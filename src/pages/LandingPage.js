@@ -289,13 +289,13 @@ const LandingPage = props => {
                 <Toolbar classes={{root: classes.toolbarRoot}}>
                     <Grid container direction='row' alignItems='center' className={classes.leftSection}>
                         <Grid item xs={12} sm>
-                            <Typography variant="h6" className={classes.title} onClick={()=>{window.open('http://gabrielslach.me')}}>
-                            GABRIELSLACH.ME
+                            <Typography variant="h6" className={classes.title}>
+                            GABRIELSLACH
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} sm>
+                        {/* <Grid item xs={12} sm>
                             <Button color="inherit" className={classes.btn} href='/classic/UPSCA'>UPSCA Bingo</Button>
-                        </Grid>
+                        </Grid> */}
                         {/* <Grid item>
                             <Tooltip title="I'm accepting commissions" aria-label="Hire Me">
                                 <Button color="inherit" className={classes.btn} href='https://www.linkedin.com/in/gabdl-dev-mete/' target='_blank'>Hire Me</Button>
@@ -323,7 +323,7 @@ const LandingPage = props => {
                 <Tooltip title='Create a Room'>
                     <Button variant='contained' className={`${classes.btn} ${classes.leftBtn} ${classes.primaryBtn}`} href='#getting-started'>Get Started</Button>
                 </Tooltip>
-                <Button variant='outlined' className={`${classes.btn} ${classes.outlinedBtn}`} href='/classic/UPSCA'>UPSCA Bingo</Button>
+                <Button variant='outlined' className={`${classes.btn} ${classes.outlinedBtn}`} onClick={setOpenDialog}>Join a room</Button>
             </div>
             <div className={classes.circles}>
                 <div className={`${classes.circlePrim} ${classes.purple}`}>
@@ -344,7 +344,7 @@ const LandingPage = props => {
                 setOpen={setOpenDialog}
                 title='BINGO Room'
                 contentText='What is your Room ID?'
-                FieldsGrid={<form onSubmit = {handleGoToRoomConfirm}><TextField autoFocus fullWidth name='roomId' label='Room ID' placeholder='e.g. "UPSCA"' value={roomId} onChange={handleChangeRoomId} /></form>}
+                FieldsGrid={<form onSubmit = {handleGoToRoomConfirm}><TextField autoFocus fullWidth name='roomId' label='Room ID' placeholder='e.g. "A29O3"' value={roomId} onChange={handleChangeRoomId} /></form>}
                 confirmText='Confirm'
                 onConfirm={handleGoToRoomConfirm}
                 onCancel={handleGoToRoomCancel}
